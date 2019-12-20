@@ -92,8 +92,11 @@ vector<string> Lexer(const string& fileName)
     return finalStringVector;
 }
 
-unordered_map<string, Command> firstMap()
+unordered_map<string, Command*> firstMap()
 {
+    unordered_map<string, Command*> map{};
+
+
 
 
 }
