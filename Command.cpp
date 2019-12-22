@@ -14,7 +14,7 @@
 // Print Command
 class PrintCommand : public Command{
 public:
-    virtual int execute(string* str){
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output){
         cout << str << endl;
         return 1;
     }
@@ -26,7 +26,7 @@ public:
     // every 1000 ms is 1 second
     chrono::milliseconds timeSpan;
     //
-    virtual int execute(string* str){
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output){
         this_thread::sleep_for(timeSpan);
         return 1;
     }
@@ -35,7 +35,7 @@ public:
 class OpenServerCommand : public Command{
 public:
 
-    virtual int execute(string* str)
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output)
     {
         int socketfd = socket(AF_INET, SOCK_STREAM, 0);
         if (socketfd == -1) {
@@ -55,7 +55,7 @@ public:
 
 class ConnectCommand : public Command{
 public:
-    virtual int execute(string* str)
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output)
     {
         int jump = 2;
         return jump;
@@ -63,54 +63,49 @@ public:
     }
 };
 
-class DefineVarCommand : public Command{
+class DefineVarCommand : public Command
+{
 public:
     string varName;
-    string* simName;
+    string *simName;
     double value;
 
-//
-//     DefineVarCommand (string n, string sim, double val)
-//    {
-//        this->varName = n;
-//        this->simName = sim;
-//        this->value = val;
-//    }
-
-
-    virtual int execute(string* str)
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output)
     {
         int jump = 5;
-        const char *rightArrow =  "\x04->";
-        const char* leftArrow =  "\x04<-";
-        const char* symbol = reinterpret_cast<const char *>(str + 2);
+        const char *rightArrow = "\x04->";
+        const char *leftArrow = "\x04<-";
+        const char *symbol = reinterpret_cast<const char *>(str + 2);
         //put into symbol table that updates the simulator
-        if (strcmp(symbol,rightArrow) == 0)
+        if (strcmp(symbol, rightArrow) == 0)
         {
             //need to create symbol table
             int temp = 1;
         }
         //
         //put into symbol table that gets updates from the simulator
-        if (strcmp(symbol,leftArrow) == 0)
+        if (strcmp(symbol, leftArrow) == 0)
         {
             //unordered_map<string, Command*> firstMap()
             int temp = 0;
 
 
         }
-        this->simName = str +  4;
+        //assign the simname of the variable
+        this->simName = str + 4;
+        //return how much we need to jump
         return jump;
-    };
+    }
+};
 
-    class Var : public Command
-    {
+class Var : public Command
+{
     public:
         string *simName;
         double value;
-
-        virtual int execute(string* str)
+        virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output)
         {
+            this->simName = str +
 
         }
     };

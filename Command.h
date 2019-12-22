@@ -6,13 +6,14 @@
 #define EX3_COMMAND_H
 
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
 // Command Interface
 class Command {
 public:
-    virtual int execute(string* str) = 0;
+    virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output) = 0;
     //
 };
 

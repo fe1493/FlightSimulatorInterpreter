@@ -24,8 +24,7 @@ int main(int argc, char *argv[]) {
     unordered_map<string, Command *> firstMapCommands = firstMap();
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
-    int index = 0;
-  //  while (finalStringVector[index] )
+
 }
 
 vector<string> Lexer(const string &fileName) {
@@ -102,7 +101,6 @@ unordered_map<string, Command *> firstMap() {
     PrintCommand *printCommand = new PrintCommand();
     firstMapCommands.insert({"PrintCommand", printCommand});
     // *** conditionParserCommand ***
-
     return firstMapCommands;
 }
 
