@@ -9,7 +9,7 @@
 using namespace std;
 
 vector<string> Lexer(const string &file);
-unordered_map<string, Command *>* firstMap();
+unordered_map<string, Command *> firstMap();
 
 int main(int argc, char *argv[]) {
     // read from file
@@ -21,11 +21,11 @@ int main(int argc, char *argv[]) {
 //    map<string, Command>  stringToCommands;
     finalStringVector = Lexer(argv[1]);
 //    stringToCommands = Parser(finalStringVector);
-    unordered_map<string, Command *>* firstMapCommands = firstMap();
+    unordered_map<string, Command *> firstMapCommands = firstMap();
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
     int index = 0;
-    while (finalStringVector[index] )
+  //  while (finalStringVector[index] )
 }
 
 vector<string> Lexer(const string &fileName) {
@@ -84,23 +84,23 @@ vector<string> Lexer(const string &fileName) {
     return finalStringVector;
 }
 
-unordered_map<string, Command *>* firstMap() {
-    unordered_map<string, Command *>* firstMapCommands{};
+unordered_map<string, Command *> firstMap() {
+    unordered_map<string, Command *> firstMapCommands{};
     // *** OpenServerCommand ***
     OpenServerCommand *openServerCommand = new OpenServerCommand();
-    firstMapCommands->insert({"openDataServer", openServerCommand});
+    firstMapCommands.insert({"openDataServer", openServerCommand});
     // *** connectControlClientCommand ***
     ConnectCommand *connectCommand = new ConnectCommand();
-    firstMapCommands->insert({"connectControlClient", connectCommand});
+    firstMapCommands.insert({"connectControlClient", connectCommand});
     // *** DefineVarCommand ***
     DefineVarCommand *defineVarCommand = new DefineVarCommand();
-    firstMapCommands->insert({"DefineVarCommand", defineVarCommand});
+    firstMapCommands.insert({"DefineVarCommand", defineVarCommand});
     // *** SleepCommand ***
     SleepCommand *sleepCommand = new SleepCommand();
-    firstMapCommands->insert({"SleepCommand", sleepCommand});
+    firstMapCommands.insert({"SleepCommand", sleepCommand});
     // *** PrintCommand ***
     PrintCommand *printCommand = new PrintCommand();
-    firstMapCommands->insert({"PrintCommand", printCommand});
+    firstMapCommands.insert({"PrintCommand", printCommand});
     // *** conditionParserCommand ***
 
     return firstMapCommands;
