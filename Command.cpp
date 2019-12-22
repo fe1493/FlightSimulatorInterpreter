@@ -14,9 +14,9 @@
 // Print Command
 class PrintCommand : public Command{
 public:
-    string str;
-    virtual int execute(){
+    virtual int execute(string* str){
         cout << str << endl;
+        return 1;
     }
 };
 
@@ -26,8 +26,9 @@ public:
     // every 1000 ms is 1 second
     chrono::milliseconds timeSpan;
     //
-    virtual int execute(){
+    virtual int execute(string* str){
         this_thread::sleep_for(timeSpan);
+        return 1;
     }
 };
 
