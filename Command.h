@@ -7,6 +7,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <chrono>
 
 
 using namespace std;
@@ -38,8 +39,11 @@ public:
 class OpenServerCommand : public Command{
 public:
     virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output);
-
+    static int openServer(string *str);
 };
+
+
+
 // *** ConnectCommand Class ***
 class ConnectCommand : public Command{
 public:
