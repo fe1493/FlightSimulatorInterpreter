@@ -17,24 +17,25 @@
 #include <netinet/in.h>
 
 // *** Print Command ***
-int PrintCommand::execute(string *str, unordered_map<string, Command *> input,
-                          unordered_map<string, Command *> output) {
+int PrintCommand::execute(string *str, unordered_map<string, Command *>* input,
+                          unordered_map<string, Command *>* output) {
     cout << str << endl;
     return 1;
 }
 
 // *** SleepCommand execute ***
-int SleepCommand::execute(string *str, unordered_map<string, Command *> input,
-                          unordered_map<string, Command *> output) {
+int SleepCommand::execute(string *str, unordered_map<string, Command *>* input,
+                          unordered_map<string, Command *>* output) {
     this_thread::sleep_for(timeSpan);
     return 1;
 }
 
 // *** OpenServerCommand execute ***
 
-int OpenServerCommand::execute(string *str, unordered_map<string, Command *> input,
-                               unordered_map<string, Command *> output) {
+int OpenServerCommand::execute(string *str, unordered_map<string, Command *>* input,
+                               unordered_map<string, Command *>* output) {
     thread serverThread(openServer, str);
+    serverThread.join();
 }
 
 int OpenServerCommand::openServer(string *str){
@@ -81,16 +82,16 @@ int OpenServerCommand::openServer(string *str){
 }
 
 // *** ConnectCommand execute ***
-int ConnectCommand::execute(string *str, unordered_map<string, Command *> input,
-                            unordered_map<string, Command *> output) {
+int ConnectCommand::execute(string *str, unordered_map<string, Command *>* input,
+                            unordered_map<string, Command *>* output) {
     int jump = 2;
     return jump;
 
 }
 
 // *** DefineVarCommand execute ***
-int DefineVarCommand::execute(string *str, unordered_map<string, Command *> input,
-                              unordered_map<string, Command *> output) {
+int DefineVarCommand::execute(string *str, unordered_map<string, Command *>* input,
+                              unordered_map<string, Command *>* output) {
     int jump = 5;
     const char *rightArrow = "\x04->";
     const char *leftArrow = "\x04<-";
@@ -117,7 +118,8 @@ int DefineVarCommand::execute(string *str, unordered_map<string, Command *> inpu
 
 
 // *** Var execute ***
-int Var::execute(string *str, unordered_map<string, Command *> input, unordered_map<string, Command *> output) {
+int Var::execute(string *str, unordered_map<string, Command *>* input,
+        unordered_map<string, Command *>* output) {
     Command *var = new Var();
 
 }
