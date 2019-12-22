@@ -14,17 +14,19 @@ unordered_map<string, Command *> firstMap();
 int main(int argc, char *argv[]) {
     // read from file
     // get a string array of all the words from the file
-    // parser
-    // make new objects
-    //
-    vector<string> finalStringVector;
-//    map<string, Command>  stringToCommands;
-    finalStringVector = Lexer(argv[1]);
-//    stringToCommands = Parser(finalStringVector);
+    vector<string> finalStringVector = Lexer(argv[1]);
+    // initialize the MAIN COMMAND MAP
     unordered_map<string, Command *> firstMapCommands = firstMap();
+    // initialize the SYMBOL TABLE MAP
+    unordered_map<string, Command *> inputSymbolTable{};
+    unordered_map<string, Command *> outputSymbolTable{};
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
-
+    int index = 0;
+    while (index < finalStringVector.size()){
+        Command* c = firstMapCommands.at(finalStringVector[index]);
+        index = c->execute(&finalStringVector[index], inputSymbolTable, outputSymbolTable);
+    }
 }
 
 vector<string> Lexer(const string &fileName) {
@@ -101,6 +103,7 @@ unordered_map<string, Command *> firstMap() {
     PrintCommand *printCommand = new PrintCommand();
     firstMapCommands.insert({"PrintCommand", printCommand});
     // *** conditionParserCommand ***
+
     return firstMapCommands;
 }
 
