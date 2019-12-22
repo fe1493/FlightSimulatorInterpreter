@@ -3,4 +3,4 @@ project(PleaseWork)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(PleaseWork main.cpp Command.cpp Command.h)
+add_executable(PleaseWork main.cpp Command.h Command.cpp)

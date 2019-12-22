@@ -90,14 +90,29 @@ public:
             //need to create symbol table
             int temp = 1;
         }
+        //
         //put into symbol table that gets updates from the simulator
         if (strcmp(symbol,leftArrow) == 0)
         {
+            //unordered_map<string, Command*> firstMap()
             int temp = 0;
 
 
         }
         this->simName = str +  4;
         return jump;
-    }
+    };
+
+    class Var : public Command
+    {
+    public:
+        string *simName;
+        double value;
+
+        virtual int execute(string* str)
+        {
+
+        }
+    };
+
 };
