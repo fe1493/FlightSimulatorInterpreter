@@ -105,9 +105,8 @@ class Var : public Command
         double value;
         virtual int execute(string* str, unordered_map<string, Command*> input, unordered_map<string, Command*> output)
         {
-            this->simName = str +
+            this->simName = str + 1;
 
         }
     };
 
-};
