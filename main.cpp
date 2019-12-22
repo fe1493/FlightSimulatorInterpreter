@@ -4,7 +4,7 @@
 #include <fstream>
 #include <map>
 #include <unordered_map>
-#include "Command.cpp"
+#include "Command.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     int index = 0;
     while (index < finalStringVector.size()){
         Command* c = firstMapCommands.at(finalStringVector[index]);
-        index = c->execute(&finalStringVector[index], inputSymbolTable, outputSymbolTable);
+        index += c->execute(&finalStringVector[index], inputSymbolTable, outputSymbolTable);
     }
 }
 
@@ -95,13 +95,13 @@ unordered_map<string, Command *> firstMap() {
     firstMapCommands.insert({"connectControlClient", connectCommand});
     // *** DefineVarCommand ***
     DefineVarCommand *defineVarCommand = new DefineVarCommand();
-    firstMapCommands.insert({"DefineVarCommand", defineVarCommand});
+    firstMapCommands.insert({"var", defineVarCommand});
     // *** SleepCommand ***
     SleepCommand *sleepCommand = new SleepCommand();
-    firstMapCommands.insert({"SleepCommand", sleepCommand});
+    firstMapCommands.insert({"Sleep", sleepCommand});
     // *** PrintCommand ***
     PrintCommand *printCommand = new PrintCommand();
-    firstMapCommands.insert({"PrintCommand", printCommand});
+    firstMapCommands.insert({"Print", printCommand});
     // *** conditionParserCommand ***
 
     return firstMapCommands;

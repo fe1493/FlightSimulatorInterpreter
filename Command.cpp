@@ -51,7 +51,7 @@ int SleepCommand::execute(string *str, unordered_map<string, Command *> input,
 int ConnectCommand::execute(string *str, unordered_map<string, Command *> input,
                             unordered_map<string, Command *> output)
     {
-        int jump = 2;
+        int jump = 3;
         return jump;
 
     }
@@ -68,7 +68,8 @@ int DefineVarCommand ::execute(string *str, unordered_map<string, Command *> inp
     if (strcmp(symbol, rightArrow) == 0)
     {
         //working with output symbol table
-        Command *var = new Var();
+
+
 
     }
     //
