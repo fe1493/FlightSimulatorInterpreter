@@ -4,6 +4,9 @@
 #include <fstream>
 #include <map>
 #include <unordered_map>
+#include <thread>
+#include <cstring>
+#include <mutex>
 #include "Command.h"
 
 using namespace std;
@@ -11,7 +14,6 @@ using namespace std;
 vector<string> *Lexer(const string &file);
 
 unordered_map<string, Command *> *firstMap();
-
 int main(int argc, char *argv[]) {
     // read from file
     // get a string array of all the words from the file
@@ -24,11 +26,19 @@ int main(int argc, char *argv[]) {
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
     int index = 0;
+    auto* mutex_lock = new mutex;
     while (index < finalStringVector->size()) {
         Command *c = firstMapCommands->at(finalStringVector->at(index));
-        string* str = &finalStringVector->at(index);
-        cout << *str << endl;
-        //index += c->execute(&finalStringVector->at(index), inputSymbolTable, outputSymbolTable);
+        string commandName = finalStringVector->at(index);
+        if (commandName == "openDataServer"){
+            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), mutex_lock);
+            serverThread.detach();
+        }
+        if (commandName == "connectControlClient"){
+            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index), mutex_lock);
+            clientThread.detach();
+        }
+        index += c->execute(&finalStringVector->at(index), inputSymbolTable, outputSymbolTable);
     }
 }
 
@@ -41,7 +51,7 @@ vector<string> *Lexer(const string &fileName) {
         exit(1);
     }
 
-    vector<string> *finalStringVector = new vector<string>{};
+    auto *finalStringVector = new vector<string>{};
     string line;
     //go over each line
     while (getline(myFile, line)) {
@@ -84,7 +94,7 @@ vector<string> *Lexer(const string &fileName) {
             finalStringVector->push_back(line.substr(lastFound, line.length()));
         }
     }
-//return the final vector
+    //return the final vector
     return finalStringVector;
 }
 
