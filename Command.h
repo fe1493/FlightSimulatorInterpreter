@@ -60,24 +60,27 @@ public:
 class DefineVarCommand : public Command
 {
 public:
-    string varName;
+    string* varName;
     string *simName;
     double value;
 
-    virtual int execute(string *str, unordered_map<string, Command *>* input,
-            unordered_map<string, Command *>* output);
+    virtual int execute(string *str, unordered_map<string, Command *> *input, unordered_map<string, Command *> *output);
 };
-
 // *** Var Class ***
 class Var : public Command
 {
 public:
     string *simName;
     double value;
-    virtual int execute(string* str, unordered_map<string, Command*>* input,
-            unordered_map<string, Command*>* output);
+    Var(string * sn, double val)
+    {
+        this->simName = sn;
+        this->value = val;
+    }
+    virtual int execute(string* str, unordered_map<string, Command*> *input, unordered_map<string, Command*> *output);
 
 };
+
 
 
 #endif //EX3_COMMAND_H

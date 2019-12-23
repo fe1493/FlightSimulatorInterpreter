@@ -152,25 +152,32 @@ int ConnectCommand::connectClient(string *str){
 
     close(client_socket);
 }
-
 // *** DefineVarCommand execute ***
-int DefineVarCommand::execute(string *str, unordered_map<string, Command *> *input,
-                              unordered_map<string, Command *> *output) {
+int DefineVarCommand ::execute(string *str, unordered_map<string, Command *> *input,
+                               unordered_map<string, Command *>* output)
+{
     int jump = 5;
     const char *rightArrow = "\x04->";
     const char *leftArrow = "\x04<-";
     const char *symbol = reinterpret_cast<const char *>(str + 2);
     //put into symbol table that updates the simulator
-    if (strcmp(symbol, rightArrow) == 0) {
+    if (strcmp(symbol, rightArrow) == 0)
+    {
         //working with output symbol table
-        Command *var = new Var();
+        this->varName = (str + 1);
+        this->simName = str + 4;
+        this->value = 0;
+        Command *var = new Var(this->simName, this->value);
+        output->insert(this->simName,var)
 
     }
     //
     //put into symbol table that gets updates from the simulator
-    if (strcmp(symbol, leftArrow) == 0) {
+    if (strcmp(symbol, leftArrow) == 0)
+    {
         //unordered_map<string, Command*> firstMap()
         int temp = 0;
+
 
 
     }
@@ -181,11 +188,11 @@ int DefineVarCommand::execute(string *str, unordered_map<string, Command *> *inp
 }
 
 
+
+
 // *** Var execute ***
-int Var::execute(string *str, unordered_map<string, Command *> *input,
-                 unordered_map<string, Command *> *output) {
-    Command *var = new Var();
+int Var ::execute(string *str, unordered_map<string, Command *> *input,unordered_map<string, Command *>* output)
+{
+
 
 }
-
-
