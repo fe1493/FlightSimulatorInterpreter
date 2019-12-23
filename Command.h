@@ -44,7 +44,7 @@ class OpenServerCommand : public Command{
 public:
     virtual int execute(string* str, unordered_map<string, Command*>* input,
             unordered_map<string, Command*>* output);
-    static int openServer(string *str, mutex* mutex_lock);
+    static int openServer(string *str, bool* isConnect);
 };
 
 
@@ -54,7 +54,7 @@ class ConnectCommand : public Command{
 public:
     virtual int execute(string* str, unordered_map<string, Command*>* input,
             unordered_map<string, Command*>* output);
-    static int connectClient(string *str, mutex* mutex_lock);
+    static int connectClient(string *str);
 };
 // *** DefineVarCommand Class ***
 class DefineVarCommand : public Command

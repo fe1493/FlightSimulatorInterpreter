@@ -36,8 +36,8 @@ int OpenServerCommand::execute(string *str, unordered_map<string, Command *> *in
     return 2;
 }
 
-int OpenServerCommand::openServer(string *str, mutex* mutex_lock) {
-    mutex_lock->lock();
+int OpenServerCommand::openServer(string *str, bool* isConnect) {
+
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -69,7 +69,6 @@ int OpenServerCommand::openServer(string *str, mutex* mutex_lock) {
         std::cout << "Server is now listening ..." << std::endl;
     }
 
-    mutex_lock->unlock();
     // accepting a client
     int client_socket = accept(socketfd, (struct sockaddr *) &address,
                                (socklen_t *) &address);
@@ -86,6 +85,17 @@ int OpenServerCommand::openServer(string *str, mutex* mutex_lock) {
     int valread = read( client_socket , buffer, 1024);
     std::cout<<buffer<<std::endl;
 
+    *isConnect = true;
+
+    while (isConnect){
+        buffer[1024] = {0};
+        valread = read( client_socket , buffer, 1024);
+
+        // *** here we need to put all the value into the symbol table. ***
+        // we need to use the xml file the know which variable belongs to value
+
+        std::cout<<buffer<<std::endl;
+    }
     //writing back to client
     char *hello = "Hello, I can hear you! \n";
     send(client_socket , hello , strlen(hello) , 0 );
@@ -101,8 +111,7 @@ int ConnectCommand::execute(string *str, unordered_map<string, Command *> *input
 
 }
 
-int ConnectCommand::connectClient(string *str, mutex* mutex_lock){
-    mutex_lock->lock();
+int ConnectCommand::connectClient(string *str){
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {

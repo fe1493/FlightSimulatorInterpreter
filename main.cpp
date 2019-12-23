@@ -14,6 +14,7 @@ using namespace std;
 vector<string> *Lexer(const string &file);
 
 unordered_map<string, Command *> *firstMap();
+
 int main(int argc, char *argv[]) {
     // read from file
     // get a string array of all the words from the file
@@ -26,16 +27,23 @@ int main(int argc, char *argv[]) {
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
     int index = 0;
+    bool isConnect = false;
     auto* mutex_lock = new mutex;
     while (index < finalStringVector->size()) {
         Command *c = firstMapCommands->at(finalStringVector->at(index));
         string commandName = finalStringVector->at(index);
+        // if the current Command is OpenDataServer
         if (commandName == "openDataServer"){
-            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), mutex_lock);
-            serverThread.detach();
+            // open new thread, that create a new socket and wait to a client.
+            // this thread stop the program, until the client connect and print the first line
+            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect);
+            // while the client don't connect, stop the program
+            while(!isConnect){
+                serverThread.join();
+            }
         }
         if (commandName == "connectControlClient"){
-            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index), mutex_lock);
+            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
             clientThread.detach();
         }
         index += c->execute(&finalStringVector->at(index), inputSymbolTable, outputSymbolTable);
