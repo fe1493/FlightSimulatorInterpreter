@@ -3,8 +3,10 @@
 //
 
 #include "Var.h"
+
 // *** Var execute ***
-int Var ::execute(string *str, unordered_map<string, Command *> *input,unordered_map<string, Command *>* output)
+int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
+                  OutputSymbolTable* outputSymbolTable)
 {
     //if right- connefct to connect and send the value
     const char *rightArrow = "\x04->";

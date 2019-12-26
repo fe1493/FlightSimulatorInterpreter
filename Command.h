@@ -5,10 +5,17 @@
 #ifndef EX3_COMMAND_H
 #define EX3_COMMAND_H
 
-#include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <map>
 #include <unordered_map>
+#include <thread>
+#include <cstring>
+#include <string>
 #include <chrono>
-#include <mutex>
+#include "InputSymbolTable.h"
+#include "OutputSymbolTable.h"
 
 
 using namespace std;
@@ -17,8 +24,8 @@ using namespace std;
 class Command
 {
 public:
-    virtual int execute(string *str, unordered_map<string, Command *> *input,
-                        unordered_map<string, Command *> *output) = 0;
+    virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable) = 0;
 };
 
 
@@ -26,8 +33,8 @@ public:
 class PrintCommand : public Command
 {
 public:
-    virtual int execute(string *str, unordered_map<string, Command *> *input,
-                        unordered_map<string, Command *> *output);
+    virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable);
 };
 
 // *** SleepCommand Class ***
@@ -38,23 +45,9 @@ public:
     chrono::milliseconds timeSpan;
 
     //
-    virtual int execute(string *str, unordered_map<string, Command *> *input,
-                        unordered_map<string, Command *> *output);
+    virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable);
 
 };
-
-
-// *** ConnectCommand Class ***
-class ConnectCommand : public Command
-{
-public:
-    virtual int execute(string *str, unordered_map<string, Command *> *input,
-                        unordered_map<string, Command *> *output);
-
-    static int connectClient(string *str);
-};
-
-
-
 
 #endif //EX3_COMMAND_H

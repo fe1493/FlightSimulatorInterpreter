@@ -2,20 +2,21 @@
 // Created by Efraim Paley on 26/12/2019.
 //
 
+
 #include "DefineVarCommand.h"
 #include "Var.h"
+#include "OutputSymbolTable.h"
+
 
 // *** DefineVarCommand execute ***
-int DefineVarCommand ::execute(string *str, unordered_map<string, Command *> *input,
-                               unordered_map<string, Command *>* output)
-{
+int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
+                              OutputSymbolTable *outputSymbolTable) {
     int jump = 5;
     const char *rightArrow = "\x04->";
     const char *leftArrow = "\x04<-";
     const char *symbol = reinterpret_cast<const char *>(str + 2);
     //put into symbol table that updates the simulator
-    if (strcmp(symbol, rightArrow) == 0)
-    {
+    if (strcmp(symbol, rightArrow) == 0) {
         int right = 1;
         //working with output symbol table
         Var *var = new Var();
@@ -27,12 +28,11 @@ int DefineVarCommand ::execute(string *str, unordered_map<string, Command *> *in
         var->simName = *(str + 4);
         //value
         var->value = 0;
-        output->insert({var->varName, input->at(var->simName)});
+        outputSymbolTable->outputMap->insert({var->varName, inputSymbolTable->inputMap->at(var->simName)});
     }
 
     //left arrow direction
-    if (strcmp(symbol, leftArrow) == 0)
-    {
+    if (strcmp(symbol, leftArrow) == 0) {
         int left = 1;
         Var *var = new Var();
         var->direction = left;

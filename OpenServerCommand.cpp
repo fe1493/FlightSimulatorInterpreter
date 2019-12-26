@@ -13,12 +13,12 @@
 
 // *** OpenServerCommand execute ***
 
-int OpenServerCommand::execute(string *str, unordered_map<string, Command *> *input,
-                               unordered_map<string, Command *> *output) {
+int OpenServerCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
+                               OutputSymbolTable* outputSymbolTable) {
     return 2;
 }
 
-int OpenServerCommand::openServer(string *str, bool* isConnect, unordered_map<string, Command *> *input) {
+int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable *input) {
 
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -39,7 +39,7 @@ int OpenServerCommand::openServer(string *str, bool* isConnect, unordered_map<st
 
     //the actual bind command
     if (::bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
-        std::cerr<<"Could not bind the socket to an IP"<<std::endl;
+        std::cerr << "Could not bind the socket to an IP" << std::endl;
         return -2;
     }
     //making socket listen to the port
@@ -63,67 +63,17 @@ int OpenServerCommand::openServer(string *str, bool* isConnect, unordered_map<st
 
     //reading from client
     char buffer[1024] = {0};
-    int valread = read( client_socket , buffer, 1024);
-    std::cout<<buffer<<std::endl;
+    int valread = read(client_socket, buffer, 1024);
+    std::cout << buffer << std::endl;
 
     *isConnect = true;
 
-    while (isConnect)
-    {
+    while (isConnect) {
         buffer[1024] = {0};
-        valread = read( client_socket , buffer, 1024);
-
+        valread = read(client_socket, buffer, 1024);
         // *** here we need to put all the value into the symbol table. ***
         // we need to use the xml file the know which variable belongs to value
-        insertToInput(input);
-        std::cout<<buffer<<std::endl;
+        std::cout << buffer << std::endl;
     }
-    //writing back to client
-    char *hello = "Hello, I can hear you! \n";
-    send(client_socket , hello , strlen(hello) , 0 );
-    std::cout<<"Hello message sent\n"<<std::endl;
-    return 0;
-}
-
-void OpenServerCommand :: insertToInput(unordered_map<string, Command*>* input)
-{
-
-    input->insert({"/instrumentation/airspeed-indicator/indicated-speed-kt",  new Var()});
-    input->insert({"/sim/time/warp", new Var()});
-    input->insert({"/controls/switches/magnetos", new Var()});
-    input->insert({"/instrumentation/heading-indicator/offset-deg", new Var()});
-    input->insert({"/instrumentation/altimeter/indicated-altitude-ft", new Var()});
-    input->insert({"/instrumentation/altimeter/pressure-alt-ft", new Var()});
-    input->insert({"/instrumentation/attitude-indicator/indicated-pitch-deg",new Var()});
-    input->insert({"/instrumentation/attitude-indicator/indicated-roll-deg",new Var()});
-    input->insert({"/instrumentation/attitude-indicator/internal-pitch-deg", new Var()});
-    input->insert({"/instrumentation/attitude-indicator/internal-roll-deg", new Var()});
-    input->insert({"/instrumentation/encoder/indicated-altitude-ft", new Var()});
-    input->insert({"/instrumentation/encoder/pressure-alt-ft", new Var()});
-    input->insert({"/instrumentation/gps/indicated-altitude-ft", new Var()});
-    input->insert({"/instrumentation/gps/indicated-ground-speed-kt", new Var()});
-    input->insert({"/instrumentation/gps/indicated-vertical-speed", new Var()});
-    input->insert({"/instrumentation/heading-indicator/indicated-heading-deg", new Var()});
-    input->insert({"/instrumentation/magnetic-compass/indicated-heading-deg", new Var()});
-    input->insert({"/instrumentation/slip-skid-ball/indicated-slip-skid", new Var()});
-    input->insert({"/instrumentation/turn-indicator/indicated-turn-rate", new Var()});
-    input->insert({"/instrumentation/vertical-speed-indicator/indicated-speed-fpm", new Var()});
-    input->insert({"/controls/flight/aileron", new Var()});
-    input->insert({"/controls/flight/elevator", new Var()});
-    input->insert({"/controls/flight/rudder", new Var()});
-    input->insert({"/controls/flight/flaps", new Var()});
-    input->insert({"/controls/engines/engine/throttle", new Var()});
-    input->insert({"/controls/engines/current-engine/throttle",new Var()});
-    input->insert({"/controls/switches/master-avionics", new Var()});
-    input->insert({"/controls/switches/starter", new Var()});
-    input->insert({"/engines/active-engine/auto-start", new Var()});
-    input->insert({"/controls/flight/speedbrake", new Var()});
-    input->insert({"/sim/model/c172p/brake-parking", new Var()});
-    input->insert({"/controls/engines/engine/primer", new Var()});
-    input->insert({"/controls/engines/current-engine/mixture", new Var()});
-    input->insert({"/controls/switches/master-bat", new Var()});
-    input->insert({"/controls/switches/master-alt", new Var()});
-    input->insert({"/engines/engine/rpm", new Var()});
-
 }
 

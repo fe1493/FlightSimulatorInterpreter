@@ -16,6 +16,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include "Command.h"
+#include "OutputSymbolTable.h"
 #include <sys/socket.h>
 #include <unistd.h>
 #include <netinet/in.h>
@@ -23,8 +24,8 @@
 #include <bits/stdc++.h>
 
 // *** ConnectCommand execute ***
-int ConnectCommand::execute(string *str, unordered_map<string, Command *> *input,
-                            unordered_map<string, Command *> *output) {
+int ConnectCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
+                            OutputSymbolTable* outputSymbolTable) {
     int jump = 3;
     return jump;
 
@@ -57,7 +58,7 @@ int ConnectCommand::connectClient(string *str){
     }
 
     //if here we made a connection
-    char hello[] = "set /controls/flight/rudder 1 \r\n";
+    char hello[] = "Hello";
     int is_sent = send(client_socket , hello , strlen(hello) , 0 );
     if (is_sent == -1) {
         std::cout<<"Error sending message"<<std::endl;
@@ -65,9 +66,17 @@ int ConnectCommand::connectClient(string *str){
         std::cout<<"set message sent to server" <<std::endl;
     }
 
-    char buffer[1024] = {0};
-    int valread = read( client_socket , buffer, 1024);
-    std::cout<<buffer<<std::endl;
+//    char buffer[1024] = {0};
+//    int valread = read( client_socket , buffer, 1024);
+//    std::cout<<buffer<<std::endl;
 
     close(client_socket);
+
+    char hello2[] = "Hello2";
+    is_sent = send(client_socket , hello2 , strlen(hello) , 0 );
+    if (is_sent == -1) {
+        std::cout<<"Error sending message"<<std::endl;
+    } else {
+        std::cout<<"set message sent to server" <<std::endl;
+    }
 }

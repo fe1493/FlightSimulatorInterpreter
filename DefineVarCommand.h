@@ -10,6 +10,8 @@
 #include <chrono>
 #include <mutex>
 #include "Command.h"
+#include "OutputSymbolTable.h"
+
 // *** DefineVarCommand Class ***
 class DefineVarCommand : public Command
 {
@@ -18,7 +20,8 @@ public:
     string *simName;
     double value;
 
-    virtual int execute(string *str, unordered_map<string, Command *> *input, unordered_map<string, Command *> *output);
+    virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable);
 };
 
 #endif //PLEASEWORK_DEFINEVARCOMMAND_H

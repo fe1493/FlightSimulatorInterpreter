@@ -6,12 +6,13 @@
 #define PLEASEWORK_CONNECTCOMMAND_H
 
 #include "Command.h"
+#include "OutputSymbolTable.h"
 
 // *** ConnectCommand Class ***
 class ConnectCommand : public Command {
 public:
-    virtual int execute(string *str, unordered_map<string, Command *> *input,
-                        unordered_map<string, Command *> *output);
+    virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable);
 
     static int connectClient(string *str);
 };

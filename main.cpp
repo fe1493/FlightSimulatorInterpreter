@@ -1,16 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
-#include <map>
 #include <unordered_map>
-#include <thread>
-#include <cstring>
-#include <mutex>
 #include "Command.h"
 #include "OpenServerCommand.h"
 #include "DefineVarCommand.h"
+#include "OutputSymbolTable.h"
+#include "InputSymbolTable.h"
 #include "ConnectCommand.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -22,41 +20,17 @@ int main(int argc, char *argv[]) {
     // read from file
     // get a string array of all the words from the file
     vector<string> *finalStringVector = Lexer(argv[1]);
+
     // initialize the MAIN COMMAND MAP
     unordered_map<string, Command *> *firstMapCommands = firstMap();
-    // initialize the SYMBOL TABLE MAP
-    //input gets data from simulator
-    auto *inputSymbolTable = new unordered_map<string, Command *>{};
-    //output sends data updates to the simulator
-    auto *outputSymbolTable = new unordered_map<string, Command *>{};
 
+    // initialize the Symbol table (I/O)
+    auto* outputSymbolTable = new OutputSymbolTable();
+    auto* inputSymbolTable = new InputSymbolTable();
 
-    // we need to run on the finalStringVector, and execute every Command
-    // according to the firstMap
-    int index = 0;
-    bool isConnect = false;
-    auto* mutex_lock = new mutex;
-    //parser
-    while (index < finalStringVector->size()) {
-        Command *c = firstMapCommands->at(finalStringVector->at(index));
-        string commandName = finalStringVector->at(index);
-        // if the current Command is OpenDataServer
-        if (commandName == "openDataServer"){
-            // open new thread, that create a new socket and wait to a client.
-            // this thread stop the program, until the client connect and print the first line
-            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect,
-                    inputSymbolTable);
-            // while the client don't connect, stop the program
-            while(!isConnect){
-                serverThread.join();
-            }
-        }
-        if (commandName == "connectControlClient"){
-            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
-            clientThread.detach();
-        }
-        index += c->execute(&finalStringVector->at(index), inputSymbolTable, outputSymbolTable);
-    }
+    // parse
+    auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable);
+    parser->parse();
 }
 
 vector<string> *Lexer(const string &fileName) {

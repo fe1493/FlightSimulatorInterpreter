@@ -6,10 +6,12 @@
 #define PLEASEWORK_VAR_H
 
 #include <string>
+#include <cstring>
 #include <unordered_map>
 #include <chrono>
 #include <mutex>
 #include "Command.h"
+#include "OutputSymbolTable.h"
 
 // *** Var Class ***
 class Var : public Command
@@ -20,7 +22,8 @@ public:
     int direction;
     double value;
 
-    virtual int execute(string* str, unordered_map<string, Command*> *input, unordered_map<string, Command*> *output);
+    virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
+                        OutputSymbolTable* outputSymbolTable);
 
 };
 
