@@ -8,6 +8,8 @@
 #include <cstring>
 #include <mutex>
 #include "Command.h"
+#include "OpenServerCommand.h"
+#include "DefineVarCommand.h"
 
 using namespace std;
 
@@ -22,13 +24,18 @@ int main(int argc, char *argv[]) {
     // initialize the MAIN COMMAND MAP
     unordered_map<string, Command *> *firstMapCommands = firstMap();
     // initialize the SYMBOL TABLE MAP
+    //input gets data from simulator
     auto *inputSymbolTable = new unordered_map<string, Command *>{};
+    //output sends data updates to the simulator
     auto *outputSymbolTable = new unordered_map<string, Command *>{};
+
+
     // we need to run on the finalStringVector, and execute every Command
     // according to the firstMap
     int index = 0;
     bool isConnect = false;
     auto* mutex_lock = new mutex;
+    //parser
     while (index < finalStringVector->size()) {
         Command *c = firstMapCommands->at(finalStringVector->at(index));
         string commandName = finalStringVector->at(index);
@@ -36,7 +43,8 @@ int main(int argc, char *argv[]) {
         if (commandName == "openDataServer"){
             // open new thread, that create a new socket and wait to a client.
             // this thread stop the program, until the client connect and print the first line
-            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect);
+            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect,
+                    inputSymbolTable);
             // while the client don't connect, stop the program
             while(!isConnect){
                 serverThread.join();
@@ -127,5 +135,6 @@ unordered_map<string, Command *> *firstMap() {
 
     return firstMapCommands;
 }
+
 
 
