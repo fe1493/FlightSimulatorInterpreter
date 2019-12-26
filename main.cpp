@@ -10,6 +10,7 @@
 #include "Command.h"
 #include "OpenServerCommand.h"
 #include "DefineVarCommand.h"
+#include "ConnectCommand.h"
 
 using namespace std;
 
