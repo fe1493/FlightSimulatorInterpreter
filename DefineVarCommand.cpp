@@ -6,6 +6,7 @@
 #include "DefineVarCommand.h"
 #include "Var.h"
 #include "OutputSymbolTable.h"
+#include "InputSymbolTable.h"
 
 
 // *** DefineVarCommand execute ***

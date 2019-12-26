@@ -9,11 +9,7 @@
 
 class OutputSymbolTable {
 public:
-    unordered_map<string, Command *> *outputMap;
-    OutputSymbolTable()
-    {
-        outputMap = new unordered_map<string, Command *>{};
-    }
+    unordered_map<string, Command *> *outputMap = new unordered_map<string, Command *>{};
 };
 
 

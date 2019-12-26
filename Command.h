@@ -14,11 +14,10 @@
 #include <cstring>
 #include <string>
 #include <chrono>
-#include "InputSymbolTable.h"
-#include "OutputSymbolTable.h"
-
 
 using namespace std;
+class InputSymbolTable;
+class OutputSymbolTable;
 
 // Command Interface
 class Command
@@ -49,5 +48,7 @@ public:
                         OutputSymbolTable* outputSymbolTable);
 
 };
+
+
 
 #endif //EX3_COMMAND_H

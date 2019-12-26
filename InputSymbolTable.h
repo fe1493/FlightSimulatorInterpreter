@@ -10,10 +10,8 @@
 class InputSymbolTable {
 
 public:
-    unordered_map<string, Command *> *inputMap;
-    InputSymbolTable(){
-        inputMap = new unordered_map<string, Command *>{};
-    }
+    InputSymbolTable();
+    unordered_map<string, Command *> *inputMap = new unordered_map<string, Command *>{};
 };
 
 
