@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     // parse
     auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable);
     parser->parse();
+
 }
 
 vector<string> *Lexer(const string &fileName) {

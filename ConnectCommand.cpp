@@ -31,7 +31,7 @@ int ConnectCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
 
 }
 
-int ConnectCommand::connectClient(string *str){
+int ConnectCommand::connectClient(string *str, bool* isClientConnect){
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
@@ -71,6 +71,7 @@ int ConnectCommand::connectClient(string *str){
 //    std::cout<<buffer<<std::endl;
 
     close(client_socket);
+    *isClientConnect = true;
 
     char hello2[] = "Hello2";
     is_sent = send(client_socket , hello2 , strlen(hello) , 0 );

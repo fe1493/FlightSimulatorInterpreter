@@ -14,7 +14,7 @@ public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
                         OutputSymbolTable* outputSymbolTable);
 
-    static int connectClient(string *str);
+    static int connectClient(string *str, bool* isClientConnect);
 };
 
 

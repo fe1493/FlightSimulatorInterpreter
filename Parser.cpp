@@ -9,7 +9,8 @@
 
 void Parser::parse() {
     int index = 0;
-    bool isConnect = false;
+    bool isServerConnect = false;
+    bool isClientConnect = false;
     //parser
     while (index < finalStringVector->size()) {
         Command *c = firstMapCommands->at(finalStringVector->at(index));
@@ -18,16 +19,18 @@ void Parser::parse() {
         if (commandName == "openDataServer"){
             // open new thread, that create a new socket and wait to a client.
             // this thread stop the program, until the client connect and print the first line
-            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect,
+            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isServerConnect,
                     this->inputSymbolTable);
             // while the client don't connect, stop the program
-            while(!isConnect){
+            while(!isServerConnect){
                 serverThread.join();
             }
         }
         if (commandName == "connectControlClient"){
-            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
-            clientThread.join();
+            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index), &isClientConnect);
+            while(!isClientConnect){
+                clientThread.join();
+            }
         }
         index += c->execute(&finalStringVector->at(index), this->inputSymbolTable, outputSymbolTable);
     }

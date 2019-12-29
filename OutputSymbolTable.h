@@ -5,11 +5,11 @@
 #ifndef PLEASEWORK_OUTPUTSYMBOLTABLE_H
 #define PLEASEWORK_OUTPUTSYMBOLTABLE_H
 
-#include "Command.h"
+#include "Var.h"
 
 class OutputSymbolTable {
 public:
-    unordered_map<string, Command *> *outputMap = new unordered_map<string, Command *>{};
+    unordered_map<string, Var *> *outputMap = new unordered_map<string, Var *>{};
 };
 
 

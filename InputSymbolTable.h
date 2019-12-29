@@ -5,13 +5,13 @@
 #ifndef PLEASEWORK_INPUTSYMBOLTABLE_H
 #define PLEASEWORK_INPUTSYMBOLTABLE_H
 
-#include "Command.h"
+#include "Var.h"
 
 class InputSymbolTable {
 
 public:
     InputSymbolTable();
-    unordered_map<string, Command *> *inputMap = new unordered_map<string, Command *>{};
+    unordered_map<string, Var *> *inputMap = new unordered_map<string, Var *>{};
 };
 
 
