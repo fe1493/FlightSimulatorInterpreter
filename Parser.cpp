@@ -27,6 +27,7 @@ void Parser::parse() {
         }
         if (commandName == "connectControlClient"){
            // thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
+           //thread to connect client
             thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index),this->inputSymbolTable,
                                 this->queueForUpdatingServer);
             clientThread.join();

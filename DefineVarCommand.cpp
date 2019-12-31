@@ -9,7 +9,7 @@
 #include "InputSymbolTable.h"
 
 
-// *** DefineVarCommand execute ***
+// *** DefineVarCommand execute  ***
 int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
                               OutputSymbolTable *outputSymbolTable,queue<char*> *queueForUpdatingServer) {
     int jump = 5;

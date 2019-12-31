@@ -19,7 +19,7 @@ public:
     string* varName;
     string *simName;
     double value;
-
+//
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
                         OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
 };

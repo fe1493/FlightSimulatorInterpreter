@@ -16,6 +16,7 @@
 //declare static member
 int ConnectCommand ::client_socket;
 // *** ConnectCommand execute ***
+//function for sending the message
 void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
 {
     bool stop = false;

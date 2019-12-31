@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     // initialize the Symbol table (I/O)
     auto* outputSymbolTable = new OutputSymbolTable();
     auto* inputSymbolTable = new InputSymbolTable();
+    //queue for updating sim
     auto *queueForUpdatingServer = new queue<char*>;
     // create parser
     auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable,

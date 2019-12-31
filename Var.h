@@ -25,7 +25,7 @@ public:
 
     virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
                         OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
-    char* getString(char* str);
+//    char* getString(char* str);
 
 
 };

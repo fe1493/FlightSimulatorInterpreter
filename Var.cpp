@@ -16,6 +16,7 @@ int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
 
     if (strcmp(symbol, rightArrow) == 0)
     {
+        //create the string with the sim name and value
         this->value = stod(*(str + 1));
         this->updateInfoString->append("set");
         this->updateInfoString->append(this->simName);
