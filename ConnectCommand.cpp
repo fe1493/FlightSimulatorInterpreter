@@ -20,7 +20,6 @@ int ConnectCommand ::client_socket;
 void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
 {
     bool stop = false;
-    //string temp = queueForUpdatingServer->front();
     while (!stop)
     {
         if(!queueForUpdatingServer->empty())
@@ -36,8 +35,6 @@ void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
         }
         stop = true;
     }
-
-
 }
 
 int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char*> *queue)
@@ -71,30 +68,14 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char
         std::cout << "Client is now connected to server" << std::endl;
     }
 
-
-    //if here we made a connection
-    char hello[] = "Hello";
-
+    *isClientConnect = true;
     //function for opening a thread
     //if here we made a connection
     //make a function to send a message to the client, needs to get a socket, the queue which holds the simnames,
     ConnectCommand::sendMessage(queue);
-    int is_sent = send(ConnectCommand::client_socket, hello, strlen(hello), 0);
-    if (is_sent == -1)
-    {
-        std::cout << "Error sending message" << std::endl;
-    }
-    else
-    {
-        std::cout << "set message sent to server" << std::endl;
-    }
-
-//    char buffer[1024] = {0};
-//    int valread = read( client_socket , buffer, 1024);
-//    std::cout<<buffer<<std::endl;
 
     close(ConnectCommand::client_socket);
-    *isClientConnect = true;
+
 }
 
 int ConnectCommand::execute(string *str, class InputSymbolTable * inputSymbolTable,
