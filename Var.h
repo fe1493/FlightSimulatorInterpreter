@@ -19,13 +19,17 @@ class Var : public Command
 public:
     string varName;
     string simName;
+    string* updateInfoString;
     int direction;
     double value;
 
     virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable);
+                        OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
+    char* getString(char* str);
+
 
 };
+
 
 
 #endif //PLEASEWORK_VAR_H

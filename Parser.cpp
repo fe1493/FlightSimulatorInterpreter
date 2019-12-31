@@ -26,9 +26,11 @@ void Parser::parse() {
             }
         }
         if (commandName == "connectControlClient"){
-            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
+            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index),this->inputSymbolTable,
+                    this->outputSymbolTable, this->queueForUpdatingServer);
             clientThread.join();
         }
-        index += c->execute(&finalStringVector->at(index), this->inputSymbolTable, outputSymbolTable);
+        index += c->execute(&finalStringVector->at(index), this->inputSymbolTable,
+                outputSymbolTable,this->queueForUpdatingServer);
     }
 }

@@ -14,6 +14,8 @@
 #include <cstring>
 #include <string>
 #include <chrono>
+#include <queue>
+
 
 using namespace std;
 class InputSymbolTable;
@@ -24,7 +26,7 @@ class Command
 {
 public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable) = 0;
+                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer) = 0;
 };
 
 
@@ -33,7 +35,7 @@ class PrintCommand : public Command
 {
 public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable);
+                        OutputSymbolTable* outputSymbolTable, queue<char*> *gqueueForUpdatingServer);
 };
 
 // *** SleepCommand Class ***
@@ -45,7 +47,7 @@ public:
 
     //
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable);
+                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
 
 };
 

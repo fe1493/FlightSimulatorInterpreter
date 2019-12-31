@@ -3,40 +3,52 @@
 //
 
 #include "ConnectCommand.h"
+#include "Var.h"
 #include <string>
 #include <unordered_map>
-#include <chrono>
-#include <mutex>
 #include <iostream>
-#include <thread>
-#include <sys/socket.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <string.h>
-#include "Command.h"
-#include "OutputSymbolTable.h"
 #include <sys/socket.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include <cstring>
 #include <arpa/inet.h>
-#include <bits/stdc++.h>
 
+//declare static member
+int ConnectCommand ::client_socket;
 // *** ConnectCommand execute ***
-int ConnectCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                            OutputSymbolTable* outputSymbolTable) {
-    int jump = 3;
-    return jump;
+void * ConnectCommand::sendMessage(OutputSymbolTable * outputSymbolTable,
+        queue<char *> * queueForUpdatingServer)
+{
+    bool stop = false;
+    string temp = queueForUpdatingServer->front();
+    while (!stop)
+    {
+        if(!queueForUpdatingServer->empty())
+        {
+            int is_sent = send(ConnectCommand::client_socket , queueForUpdatingServer->front(),
+                               strlen(queueForUpdatingServer->front()), 0 );
+            if (is_sent == -1) {
+                std::cout<<"Error sending message"<<std::endl;
+            } else {
+                std::cout<<"set message sent to server" <<std::endl;
+            }
+            queueForUpdatingServer->pop();
+        }
+        stop = true;
+    }
+
 
 }
 
-int ConnectCommand::connectClient(string *str){
+int ConnectCommand::connectClient(string * str, InputSymbolTable * input, OutputSymbolTable* output,
+        queue<char*> *queue)
+{
     //create socket
-    int client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_socket == -1) {
+    ConnectCommand::client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (ConnectCommand::client_socket == -1)
+    {
         //error
-        std::cerr << "Could not create a socket"<<std::endl;
+        std::cerr << "Could not create a socket" << std::endl;
         return -1;
     }
     int port = stoi(*(str + 2));
@@ -49,34 +61,61 @@ int ConnectCommand::connectClient(string *str){
     // to a number that the network understands.
 
     // Requesting a connection with the server on local host with port 8081
-    int is_connect = connect(client_socket, (struct sockaddr *)&address, sizeof(address));
-    if (is_connect == -1) {
-        std::cerr << "Could not connect to host server"<<std::endl;
+    int is_connect = connect(ConnectCommand::client_socket, (struct sockaddr *) &address, sizeof(address));
+    if (is_connect == -1)
+    {
+        std::cerr << "Could not connect to host server" << std::endl;
         return -2;
-    } else {
-        std::cout<<"Client is now connected to server" <<std::endl;
     }
+    else
+    {
+        std::cout << "Client is now connected to server" << std::endl;
+    }
+
 
     //if here we made a connection
     char hello[] = "Hello";
-    int is_sent = send(client_socket , hello , strlen(hello) , 0 );
-    if (is_sent == -1) {
-        std::cout<<"Error sending message"<<std::endl;
-    } else {
-        std::cout<<"set message sent to server" <<std::endl;
+
+    //function for opening a thread
+    //if here we made a connection
+    //make a function to send a message to the client, needs to get a socket, the queue,
+    ConnectCommand::sendMessage(output, queue);
+    int is_sent = send(ConnectCommand::client_socket, hello, strlen(hello), 0);
+    if (is_sent == -1)
+    {
+        std::cout << "Error sending message" << std::endl;
+    }
+    else
+    {
+        std::cout << "set message sent to server" << std::endl;
     }
 
 //    char buffer[1024] = {0};
 //    int valread = read( client_socket , buffer, 1024);
 //    std::cout<<buffer<<std::endl;
 
-    close(client_socket);
+
+//    char sendAfterFirstCommand[] = updateInfoString;￿
+
+    close(ConnectCommand::client_socket);
 
     char hello2[] = "Hello2";
-    is_sent = send(client_socket , hello2 , strlen(hello) , 0 );
-    if (is_sent == -1) {
-        std::cout<<"Error sending message"<<std::endl;
-    } else {
-        std::cout<<"set message sent to server" <<std::endl;
+    is_sent = send(ConnectCommand::client_socket, hello2, strlen(hello), 0);
+    if (is_sent == -1)
+    {
+        std::cout << "Error sending message" << std::endl;
+    }
+    else
+    {
+        std::cout << "set message sent to server" << std::endl;
     }
 }
+
+int ConnectCommand::execute(std::__1::string * str, class InputSymbolTable * inputSymbolTable,
+        class OutputSymbolTable * outputSymbolTable, queue<char *> * queueForUpdatingServer)
+{
+
+}
+
+
+
