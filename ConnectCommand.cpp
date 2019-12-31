@@ -69,7 +69,7 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char
     }
 
     *isClientConnect = true;
-    //function for opening a thread
+      //function for opening a thread
     //if here we made a connection
     //make a function to send a message to the client, needs to get a socket, the queue which holds the simnames,
     ConnectCommand::sendMessage(queue);
