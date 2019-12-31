@@ -16,7 +16,6 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
     const char *rightArrow = "\x04->";
     const char *leftArrow = "\x04<-";
     const char *symbol = reinterpret_cast<const char *>(str + 2);
-
     //working with output symbol table
     Var *var = new Var();
     //assign variable name

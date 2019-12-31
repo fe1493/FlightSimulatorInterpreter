@@ -14,7 +14,7 @@
 // *** OpenServerCommand execute ***
 
 int OpenServerCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                               OutputSymbolTable* outputSymbolTable) {
+                               OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer) {
     return 2;
 }
 

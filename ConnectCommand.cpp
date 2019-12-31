@@ -16,8 +16,7 @@
 //declare static member
 int ConnectCommand ::client_socket;
 // *** ConnectCommand execute ***
-void * ConnectCommand::sendMessage(OutputSymbolTable * outputSymbolTable,
-        queue<char *> * queueForUpdatingServer)
+void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
 {
     bool stop = false;
     string temp = queueForUpdatingServer->front();
@@ -40,8 +39,7 @@ void * ConnectCommand::sendMessage(OutputSymbolTable * outputSymbolTable,
 
 }
 
-int ConnectCommand::connectClient(string * str, InputSymbolTable * input, OutputSymbolTable* output,
-        queue<char*> *queue)
+int ConnectCommand::connectClient(string * str, InputSymbolTable * input,queue<char*> *queue)
 {
     //create socket
     ConnectCommand::client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -78,8 +76,8 @@ int ConnectCommand::connectClient(string * str, InputSymbolTable * input, Output
 
     //function for opening a thread
     //if here we made a connection
-    //make a function to send a message to the client, needs to get a socket, the queue,
-    ConnectCommand::sendMessage(output, queue);
+    //make a function to send a message to the client, needs to get a socket, the queue which holds the simnames,
+    ConnectCommand::sendMessage(queue);
     int is_sent = send(ConnectCommand::client_socket, hello, strlen(hello), 0);
     if (is_sent == -1)
     {
@@ -93,9 +91,6 @@ int ConnectCommand::connectClient(string * str, InputSymbolTable * input, Output
 //    char buffer[1024] = {0};
 //    int valread = read( client_socket , buffer, 1024);
 //    std::cout<<buffer<<std::endl;
-
-
-//    char sendAfterFirstCommand[] = updateInfoString;￿
 
     close(ConnectCommand::client_socket);
 
