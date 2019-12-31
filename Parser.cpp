@@ -9,31 +9,43 @@
 
 void Parser::parse() {
     int index = 0;
-    bool isConnect = false;
+    bool isServerConnect = false;
+    bool isClientConnect = false;
+    Command *c;
     //parser
     while (index < finalStringVector->size()) {
-        Command *c = firstMapCommands->at(finalStringVector->at(index));
         string commandName = finalStringVector->at(index);
+        // if the command is in the first Map Commands
+        // operServer, connectClient, Print, Sleep, Define Var
+        if (firstMapCommands->find(commandName) != firstMapCommands->end()){
+            c = firstMapCommands->at(commandName);
+        }
+        // check if the key is a Var in the output Map
+        else {
+            c = this->outputSymbolTable->outputMap->at(commandName);
+        }
+
         // if the current Command is OpenDataServer
         if (commandName == "openDataServer"){
             // open new thread, that create a new socket and wait to a client.
             // this thread stop the program, until the client connect and print the first line
-            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isConnect,
+            thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isServerConnect,
                     this->inputSymbolTable);
             // while the client don't connect, stop the program
-            while(!isConnect){
-                serverThread.join();
+            while(!isServerConnect){
+                //serverThread.join();
             }
+            serverThread.detach();
         }
         if (commandName == "connectControlClient"){
-           // thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index));
-           //thread to connect client
-            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index),this->inputSymbolTable,
-                                this->queueForUpdatingServer);
-            clientThread.join();
+            thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index),
+                    &isClientConnect, this->queueForUpdatingServer);
+            while(!isClientConnect){
+                //clientThread.join();
+            }
+            clientThread.detach();
         }
-       // index += c->execute(&finalStringVector->at(index), this->inputSymbolTable, outputSymbolTable);
         index += c->execute(&finalStringVector->at(index), this->inputSymbolTable,
-                            outputSymbolTable,this->queueForUpdatingServer);
+                outputSymbolTable, this->queueForUpdatingServer);
     }
 }

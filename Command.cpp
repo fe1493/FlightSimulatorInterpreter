@@ -14,13 +14,13 @@
 // *** Print Command ***
 int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
                           OutputSymbolTable* outputSymbolTable,  queue<char*>* queueForUpdatingServer) {
-    cout << str << endl;
-    return 1;
+    cout << str + 1 << endl;
+    return 2;
 }
 
 // *** SleepCommand execute ***
 int SleepCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
                           OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer) {
     this_thread::sleep_for(timeSpan);
-    return 1;
+    return 2;
 }

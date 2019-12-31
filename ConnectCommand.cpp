@@ -20,7 +20,7 @@ int ConnectCommand ::client_socket;
 void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
 {
     bool stop = false;
-    string temp = queueForUpdatingServer->front();
+    //string temp = queueForUpdatingServer->front();
     while (!stop)
     {
         if(!queueForUpdatingServer->empty())
@@ -40,7 +40,7 @@ void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
 
 }
 
-int ConnectCommand::connectClient(string * str, InputSymbolTable * input,queue<char*> *queue)
+int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char*> *queue)
 {
     //create socket
     ConnectCommand::client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -94,24 +94,11 @@ int ConnectCommand::connectClient(string * str, InputSymbolTable * input,queue<c
 //    std::cout<<buffer<<std::endl;
 
     close(ConnectCommand::client_socket);
-
-    char hello2[] = "Hello2";
-    is_sent = send(ConnectCommand::client_socket, hello2, strlen(hello), 0);
-    if (is_sent == -1)
-    {
-        std::cout << "Error sending message" << std::endl;
-    }
-    else
-    {
-        std::cout << "set message sent to server" << std::endl;
-    }
+    *isClientConnect = true;
 }
 
-int ConnectCommand::execute(std::__1::string * str, class InputSymbolTable * inputSymbolTable,
-        class OutputSymbolTable * outputSymbolTable, queue<char *> * queueForUpdatingServer)
+int ConnectCommand::execute(string *str, class InputSymbolTable * inputSymbolTable,
+                            class OutputSymbolTable * outputSymbolTable, queue<char *> * queueForUpdatingServer)
 {
 
 }
-
-
-

@@ -11,10 +11,16 @@
 #include <netinet/in.h>
 #include <string.h>
 
+vector<string> *createSimArray();
+
+vector<double> *createValArray(char buffer);
+
+int isNum(const string &num);
+
 // *** OpenServerCommand execute ***
 
-int OpenServerCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                               OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer) {
+int OpenServerCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
+                               OutputSymbolTable *outputSymbolTable, queue<char*> *queueForUpdatingServer) {
     return 2;
 }
 
@@ -61,19 +67,126 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
 
     close(socketfd); //closing the listening socket
 
-    //reading from client
+    //reading from client and print the input
     char buffer[1024] = {0};
     int valread = read(client_socket, buffer, 1024);
     std::cout << buffer << std::endl;
+    // the index of the var in the simArray
+    int indexVar = 0;
+    // create an array with the simulators keys, according to the xml order
+    vector<string> *simArray = createSimArray();
+    // update the SIM FIELD of every variable at input SYMBOLE TABLE
+    for (int i = 0; i < simArray->size(); i++){
+        input->inputMap->at(simArray->at(i))->simName = simArray->at(i);
+    }
+    string val = "";
+    for (char c: buffer){
+        if (c == ','){
+            if (isNum(val)){
+                input->inputMap->at(simArray->at(indexVar))->value = stod(val);
+                val = "";
+                indexVar++;
+            }
+        }
+        if (c == '\n'){
+            if (isNum(val)){
+                input->inputMap->at(simArray->at(indexVar))->value = stod(val);
+                val = "";
+                // end of block. reset the index to next block.
+                indexVar = 0;
+            }
+        } else {
+            // create the value
+            val += c;
+        }
+    }
 
+    // let MAIN go on
     *isConnect = true;
 
+    // keep get values from the simulator
     while (isConnect) {
         buffer[1024] = {0};
         valread = read(client_socket, buffer, 1024);
         // *** here we need to put all the value into the symbol table. ***
         // we need to use the xml file the know which variable belongs to value
         std::cout << buffer << std::endl;
+        for (char c: buffer){
+            if (c == ','){
+                if (isNum(val)){
+                    input->inputMap->at(simArray->at(indexVar))->value = stod(val);
+                    val = "";
+                    indexVar++;
+                }
+            }
+            if (c == '\n'){
+                if (isNum(val)){
+                    input->inputMap->at(simArray->at(indexVar))->value = stod(val);
+                    val = "";
+                    // end of block. reset the index to next block.
+                    indexVar = 0;
+                }
+            } else {
+                // create the value
+                val += c;
+            }
+        }
     }
 }
 
+vector<string> *createSimArray() {
+    vector<string> *simArray = new vector<string>{};
+    simArray->push_back("/instrumentation/airspeed-indicator/indicated-speed-kt");
+    simArray->push_back("/sim/time/warp");
+    simArray->push_back("/controls/switches/magnetos");
+    simArray->push_back("/instrumentation/heading-indicator/offset-deg");
+    simArray->push_back("/instrumentation/altimeter/indicated-altitude-ft");
+    simArray->push_back("/instrumentation/altimeter/pressure-alt-ft");
+    simArray->push_back("/instrumentation/attitude-indicator/indicated-pitch-deg");
+    simArray->push_back("/instrumentation/attitude-indicator/indicated-roll-deg");
+    simArray->push_back("/instrumentation/attitude-indicator/internal-pitch-deg");
+    simArray->push_back("/instrumentation/attitude-indicator/internal-roll-deg");
+    simArray->push_back("/instrumentation/encoder/indicated-altitude-ft");
+    simArray->push_back("/instrumentation/encoder/pressure-alt-ft");
+    simArray->push_back("/instrumentation/gps/indicated-altitude-ft");
+    simArray->push_back("/instrumentation/gps/indicated-ground-speed-kt");
+    simArray->push_back("/instrumentation/gps/indicated-vertical-speed");
+    simArray->push_back("/instrumentation/heading-indicator/indicated-heading-deg");
+    simArray->push_back("/instrumentation/magnetic-compass/indicated-heading-deg");
+    simArray->push_back("/instrumentation/slip-skid-ball/indicated-slip-skid");
+    simArray->push_back("/instrumentation/turn-indicator/indicated-turn-rate");
+    simArray->push_back("/instrumentation/vertical-speed-indicator/indicated-speed-fpm");
+    simArray->push_back("/controls/flight/aileron");
+    simArray->push_back("/controls/flight/elevator");
+    simArray->push_back("/controls/flight/rudder");
+    simArray->push_back("/controls/flight/flaps");
+    simArray->push_back("/controls/engines/engine/throttle");
+    simArray->push_back("/controls/engines/current-engine/throttle");
+    simArray->push_back("/controls/switches/master-avionics");
+    simArray->push_back("/controls/switches/starter");
+    simArray->push_back("/engines/active-engine/auto-start");
+    simArray->push_back("/controls/flight/speedbrake");
+    simArray->push_back("/sim/model/c172p/brake-parking");
+    simArray->push_back("/controls/engines/engine/primer");
+    simArray->push_back("/controls/engines/current-engine/mixture");
+    simArray->push_back("/controls/switches/master-bat");
+    simArray->push_back("/controls/switches/master-alt");
+    simArray->push_back("/engines/engine/rpm");
+    return simArray;
+}
+
+int isNum(const string &num) {
+    int points = 0;
+    for (size_t i = 0; i < num.length(); i++) {
+        if (num[i] == '.') {
+            points++;
+        } else if (!isdigit(num[i])) {
+            return false;
+        }
+    }
+    if (points > 1) {
+        return false;
+    } else {
+        return true;
+    }
+}
