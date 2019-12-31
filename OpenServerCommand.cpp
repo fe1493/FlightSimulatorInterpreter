@@ -3,17 +3,18 @@
 //
 
 #include "OpenServerCommand.h"
+#include "Var.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <string>
 #include <unistd.h>
 #include <netinet/in.h>
-#include <cstring>
+#include <string.h>
 
 // *** OpenServerCommand execute ***
 
 int OpenServerCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                               OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer) {
+                               OutputSymbolTable* outputSymbolTable) {
     return 2;
 }
 

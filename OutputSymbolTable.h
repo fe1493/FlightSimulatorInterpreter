@@ -6,6 +6,7 @@
 #define PLEASEWORK_OUTPUTSYMBOLTABLE_H
 
 #include "Command.h"
+
 class OutputSymbolTable {
 public:
     unordered_map<string, Command *> *outputMap = new unordered_map<string, Command *>{};

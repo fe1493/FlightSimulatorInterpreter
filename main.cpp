@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <queue>
 #include "Command.h"
 #include "OpenServerCommand.h"
 #include "DefineVarCommand.h"
@@ -24,17 +23,14 @@ int main(int argc, char *argv[]) {
 
     // initialize the MAIN COMMAND MAP
     unordered_map<string, Command *> *firstMapCommands = firstMap();
+
     // initialize the Symbol table (I/O)
     auto* outputSymbolTable = new OutputSymbolTable();
     auto* inputSymbolTable = new InputSymbolTable();
-    //queue for updating the server with our own values
-    auto *queueForUpdatingServer = new queue<char*>;
+
     // parse
-    auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable,
-            queueForUpdatingServer);
+    auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable);
     parser->parse();
-
-
 }
 
 vector<string> *Lexer(const string &fileName) {
@@ -113,3 +109,6 @@ unordered_map<string, Command *> *firstMap() {
 
     return firstMapCommands;
 }
+
+
+
