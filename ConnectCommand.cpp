@@ -17,10 +17,9 @@
 int ConnectCommand ::client_socket;
 // *** ConnectCommand execute ***
 //function for sending the message
-void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
+void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer, bool *isClientConnect)
 {
-    bool stop = false;
-    while (!stop)
+    while (isClientConnect)
     {
         if(!queueForUpdatingServer->empty())
         {
@@ -33,7 +32,6 @@ void * ConnectCommand::sendMessage(queue<char *> * queueForUpdatingServer)
             }
             queueForUpdatingServer->pop();
         }
-        stop = true;
     }
 }
 
@@ -65,7 +63,7 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char
     }
     else
     {
-        std::cout << "Client is now connected to server" << std::endl;
+        std::cout << "Client is now connected to server\n" << std::endl;
     }
 
     *isClientConnect = true;
@@ -73,7 +71,7 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char
     //function for opening a thread
     //if here we made a connection
     //make a function to send a message to the client, needs to get a socket, the queue which holds the simnames,
-    ConnectCommand::sendMessage(queue);
+    ConnectCommand::sendMessage(queue, isClientConnect);
 
     close(ConnectCommand::client_socket);
 
@@ -82,5 +80,6 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<char
 int ConnectCommand::execute(string *str, class InputSymbolTable * inputSymbolTable,
                             class OutputSymbolTable * outputSymbolTable, queue<char *> * queueForUpdatingServer)
 {
+    return 3;
 
 }

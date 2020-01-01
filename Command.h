@@ -35,7 +35,7 @@ class PrintCommand : public Command
 {
 public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable, queue<char*> *gqueueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
 };
 
 // *** SleepCommand Class ***

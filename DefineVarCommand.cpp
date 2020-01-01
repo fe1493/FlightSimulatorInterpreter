@@ -27,11 +27,13 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
         if (varDirection == rightArrow){
             inputSymbolTable->inputMap->at(varSim)->direction = 1;
         }
-    } else {
+    }
+    else
+    {
         jump = 2;
-        Var* var = new Var();
+        Var *var = new Var();
         // var value can be ONE option:
-        // 1. value of var from the input symbole table
+        // 1. value of var from the input symbol table
         // 2. Expression
         // var->value = calculate(str + 1);
         outputSymbolTable->outputMap->insert({*(str + 1), var});

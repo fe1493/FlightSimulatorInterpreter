@@ -13,7 +13,6 @@ int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
     const char *rightArrow = "\x04->";
     const char *symbol = reinterpret_cast<const char *>(str + 2);
     this->simName = *(str + 4);
-
     if (strcmp(symbol, rightArrow) == 0)
     {
         //create the string with the sim name and value

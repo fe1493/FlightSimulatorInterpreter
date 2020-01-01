@@ -16,7 +16,7 @@
 class DefineVarCommand : public Command
 {
 public:
-    string* varName;
+    string* vName;
     string *simName;
     double value;
 //

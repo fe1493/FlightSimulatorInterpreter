@@ -19,7 +19,7 @@ public:
                         OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
 
     static int connectClient(string *str, bool *isClientConnect, queue<char*> *queue);
-    static void* sendMessage(queue<char*> *queueForUpdatingServer);
+    static void* sendMessage(queue<char*> *queueForUpdatingServer, bool *isClientConnect);
     //
 
 };
