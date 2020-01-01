@@ -20,6 +20,7 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
         // const char *symbol = reinterpret_cast<const char *>(str + 2);
         string varName = *(str + 1);
         string varSim = *(str + 4);
+        varSim = varSim.substr(1, varSim.length() - 2);
         string varDirection = *(str + 2);
         // connect this var to the same var in the output symbol table
         outputSymbolTable->outputMap->insert({varName, inputSymbolTable->inputMap->at(varSim)});
