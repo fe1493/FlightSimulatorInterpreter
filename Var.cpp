@@ -8,7 +8,7 @@
 
 // *** Var execute ***
 int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
-                  OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer)
+                  OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer)
 {
     //if right- connect and send the value
     if (this->direction)
@@ -16,14 +16,10 @@ int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
         string temp = *(str + 1);
         //create the string with the sim name and value
         this->value = Parser::checkExpression(&temp, outputSymbolTable);
-        this->updateInfoString += "set ";
-        this->updateInfoString += this->simName;
-        this->updateInfoString += " ";
-        this->updateInfoString += to_string(this->value);
-        this->updateInfoString +=" ";
-        this->updateInfoString += "/r/n";
+        string val = to_string(this->value);
+        string str = "set " + this->simName + " " + val + "\r\n";
         //enter into the queue. Queue is meant to hold the strings of all the sim names
-        queueForUpdatingServer->push((char*)(&this->updateInfoString));
+        queueForUpdatingServer->push(str);
     }
     return 2;
 }

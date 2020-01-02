@@ -13,7 +13,7 @@
 
 // *** Print Command ***
 int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                          OutputSymbolTable* outputSymbolTable,  queue<char*>* queueForUpdatingServer)
+                          OutputSymbolTable* outputSymbolTable,  queue<string>* queueForUpdatingServer)
 {
     // check if the text is string (like "text")
     string text = *(str + 1);
@@ -35,7 +35,7 @@ int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
 
 // *** SleepCommand execute ***
 int SleepCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
-                          OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer)
+                          OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer)
 {
     int milliseconds = stoi(*(str + 1));
     this_thread::sleep_for(std::chrono::milliseconds(milliseconds));

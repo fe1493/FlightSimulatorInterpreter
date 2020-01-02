@@ -15,7 +15,7 @@ public:
         this->firstMapCommands = firstMap;
     }
     int execute(string *str, InputSymbolTable* inputSymbolTable,
-                OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
+                OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer);
 };
 
 

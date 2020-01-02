@@ -11,25 +11,60 @@ bool checkCondition(string str, OutputSymbolTable outputSymbolTable);
 string removeSpace2(string str);
 
 int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
-                             OutputSymbolTable *outputSymbolTable, queue<char *> *queueForUpdatingServer) {
+                             OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     // we calculate the jump at conditionVector function
     int jump = 2;
-    // check the condition
-    bool condition = checkCondition(*(str + 1), *outputSymbolTable);
     // copy all lines of the block (until you get '}')
     vector<string> *conditionVector = copyCommands(str + 2, &jump);
-    // init a new Parser for the Commands of the condition
-    Parser *parser = new Parser(conditionVector, this->firstMapCommands, outputSymbolTable, inputSymbolTable,
-                                queueForUpdatingServer);
     if (*str == "while") {
         // check the condition, if true - start a new Parser for that while
-        while (condition) {
-            parser->parse();
+        while (checkCondition(*(str + 1), *outputSymbolTable)) {
+            int index = 0;
+            string commandName = conditionVector->at(index);
+            Command* c = nullptr;
+            while(index < conditionVector->size()){
+                if (firstMapCommands->find(commandName) != firstMapCommands->end())
+                {
+                    c = firstMapCommands->at(commandName);
+                }
+                    // check if the key is a Var in the output Map
+                else if (outputSymbolTable->outputMap->find(commandName) != outputSymbolTable->outputMap->end())
+                {
+                    c = outputSymbolTable->outputMap->at(commandName);
+                }
+                try{
+                    index += c->execute(&conditionVector->at(index), inputSymbolTable,
+                                        outputSymbolTable, queueForUpdatingServer);
+                }
+                catch(const char* e){
+                    throw ("unknown Command");
+                }
+            }
         }
     } else if (*str == "if") {
         // check the condition, if true - start a new Parser for that 'if'
-        if (condition){
-            parser->parse();
+        if (checkCondition(*(str + 1), *outputSymbolTable)){
+            int index = 0;
+            string commandName = conditionVector->at(index);
+            Command* c = nullptr;
+            while(index < conditionVector->size()){
+                if (firstMapCommands->find(commandName) != firstMapCommands->end())
+                {
+                    c = firstMapCommands->at(commandName);
+                }
+                    // check if the key is a Var in the output Map
+                else if (outputSymbolTable->outputMap->find(commandName) != outputSymbolTable->outputMap->end())
+                {
+                    c = outputSymbolTable->outputMap->at(commandName);
+                }
+                try{
+                    index += c->execute(&conditionVector->at(index), inputSymbolTable,
+                                        outputSymbolTable, queueForUpdatingServer);
+                }
+                catch(const char* e){
+                    throw ("unknown Command");
+                }
+            }
         }
     }
     return jump;
@@ -39,7 +74,8 @@ vector<string> *copyCommands(string *str, int *jump) {
     auto *conditionVector = new vector<string>{};
     while (*str != "}") {
         conditionVector->push_back(*str);
-        *jump++;
+        *jump = *jump + 1;
+        str++;
     }
     return conditionVector;
 }

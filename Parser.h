@@ -16,11 +16,11 @@ public:
     unordered_map<string, Command *> *firstMapCommands;
     OutputSymbolTable* outputSymbolTable;
     InputSymbolTable* inputSymbolTable;
-    queue<char*> *queueForUpdatingServer;
+    queue<string> *queueForUpdatingServer;
 
 //
     Parser(vector<string> *stringVector,unordered_map<string, Command *> *firstMap,
-            OutputSymbolTable* outputTable, InputSymbolTable* inputTable, queue<char*>* queue)
+            OutputSymbolTable* outputTable, InputSymbolTable* inputTable, queue<string>* queue)
             {
         this->finalStringVector = stringVector;
         this->firstMapCommands = firstMap;

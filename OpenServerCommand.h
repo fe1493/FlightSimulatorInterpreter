@@ -13,7 +13,7 @@
 {
     public:
         virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
-                            OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
+                            OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
         static int openServer(string *str, bool* isConnect, InputSymbolTable *input);
     };
 

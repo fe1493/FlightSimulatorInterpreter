@@ -16,10 +16,10 @@ public:
     static int client_socket;
 
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
 
-    static int connectClient(string *str, bool *isClientConnect, queue<char*> *queue);
-    static void* sendMessage(queue<char*> *queueForUpdatingServer, bool *isClientConnect);
+    static int connectClient(string *str, bool *isClientConnect, queue<string> *queue);
+    static void* sendMessage(queue<string> *queueForUpdatingServer, bool *isClientConnect);
     //
 
 };

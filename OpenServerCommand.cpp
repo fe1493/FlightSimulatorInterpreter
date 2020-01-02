@@ -20,7 +20,7 @@ int isNum(const string &num);
 // *** OpenServerCommand execute ***
 
 int OpenServerCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
-                               OutputSymbolTable *outputSymbolTable, queue<char*> *queueForUpdatingServer) {
+                               OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     return 2;
 }
 

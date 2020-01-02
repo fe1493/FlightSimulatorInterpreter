@@ -5,15 +5,15 @@
 #include "InputSymbolTable.h"
 #include "Var.h"
 
-InputSymbolTable::InputSymbolTable(){
-    this->inputMap->insert({"/instrumentation/airspeed-indicator/indicated-speed-kt",  new Var()});
+InputSymbolTable::InputSymbolTable() {
+    this->inputMap->insert({"/instrumentation/airspeed-indicator/indicated-speed-kt", new Var()});
     this->inputMap->insert({"/sim/time/warp", new Var()});
     this->inputMap->insert({"/controls/switches/magnetos", new Var()});
     this->inputMap->insert({"/instrumentation/heading-indicator/offset-deg", new Var()});
     this->inputMap->insert({"/instrumentation/altimeter/indicated-altitude-ft", new Var()});
     this->inputMap->insert({"/instrumentation/altimeter/pressure-alt-ft", new Var()});
-    this->inputMap->insert({"/instrumentation/attitude-indicator/indicated-pitch-deg",new Var()});
-    this->inputMap->insert({"/instrumentation/attitude-indicator/indicated-roll-deg",new Var()});
+    this->inputMap->insert({"/instrumentation/attitude-indicator/indicated-pitch-deg", new Var()});
+    this->inputMap->insert({"/instrumentation/attitude-indicator/indicated-roll-deg", new Var()});
     this->inputMap->insert({"/instrumentation/attitude-indicator/internal-pitch-deg", new Var()});
     this->inputMap->insert({"/instrumentation/attitude-indicator/internal-roll-deg", new Var()});
     this->inputMap->insert({"/instrumentation/encoder/indicated-altitude-ft", new Var()});
@@ -31,7 +31,7 @@ InputSymbolTable::InputSymbolTable(){
     this->inputMap->insert({"/controls/flight/rudder", new Var()});
     this->inputMap->insert({"/controls/flight/flaps", new Var()});
     this->inputMap->insert({"/controls/engines/engine/throttle", new Var()});
-    this->inputMap->insert({"/controls/engines/current-engine/throttle",new Var()});
+    this->inputMap->insert({"/controls/engines/current-engine/throttle", new Var()});
     this->inputMap->insert({"/controls/switches/master-avionics", new Var()});
     this->inputMap->insert({"/controls/switches/starter", new Var()});
     this->inputMap->insert({"/engines/active-engine/auto-start", new Var()});

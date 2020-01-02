@@ -21,7 +21,7 @@ public:
     double value;
 //
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
 };
 
 #endif //PLEASEWORK_DEFINEVARCOMMAND_H

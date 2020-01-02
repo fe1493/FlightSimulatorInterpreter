@@ -18,12 +18,12 @@ class Var : public Command
 {
 public:
     string simName;
-    string updateInfoString = "";
+    string* updateInfoString;
     int direction;
     double value;
 
     virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
 
 
 

@@ -26,7 +26,7 @@ class Command
 {
 public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer) = 0;
+                        OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer) = 0;
 };
 
 
@@ -35,7 +35,7 @@ class PrintCommand : public Command
 {
 public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer);
 };
 
 // *** SleepCommand Class ***
@@ -47,7 +47,7 @@ public:
 
     //
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
+                        OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer);
 
 };
 

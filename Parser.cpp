@@ -54,8 +54,13 @@ void Parser::parse() {
             }
             clientThread.detach();
         }
-        index += c->execute(&finalStringVector->at(index), this->inputSymbolTable,
-                            outputSymbolTable, this->queueForUpdatingServer);
+        try{
+            index += c->execute(&finalStringVector->at(index), this->inputSymbolTable,
+                                outputSymbolTable, this->queueForUpdatingServer);
+        }
+        catch(const char* e) {
+            throw ("unknown Command");
+        }
     }
 }
 

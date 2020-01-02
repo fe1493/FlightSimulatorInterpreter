@@ -12,7 +12,7 @@
 
 // *** DefineVarCommand execute ***
 int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
-                              OutputSymbolTable *outputSymbolTable, queue<char*> *queueForUpdatingServer) {
+                              OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     int jump;
     if (*(str + 3) == "sim"){
         jump = 5;

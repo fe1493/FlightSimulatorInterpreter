@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     auto* outputSymbolTable = new OutputSymbolTable();
     auto* inputSymbolTable = new InputSymbolTable();
     //queue for updating sim
-    auto *queueForUpdatingServer = new queue<char*>;
+    auto *queueForUpdatingServer = new queue<string>;
     // create parser
     auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable,
                               queueForUpdatingServer);
