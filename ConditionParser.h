@@ -8,7 +8,14 @@
 #include "Command.h"
 
 class ConditionParser: public Command {
-
+private:
+    unordered_map<string, Command *> *firstMapCommands;
+public:
+    ConditionParser(unordered_map<string, Command *> *firstMap){
+        this->firstMapCommands = firstMap;
+    }
+    int execute(string *str, InputSymbolTable* inputSymbolTable,
+                OutputSymbolTable* outputSymbolTable, queue<char*> *queueForUpdatingServer);
 };
 
 

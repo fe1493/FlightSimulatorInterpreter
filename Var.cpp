@@ -4,32 +4,26 @@
 
 #include "Var.h"
 #include "ConnectCommand.h"
+#include "Parser.h"
 
 // *** Var execute ***
 int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
                   OutputSymbolTable* outputSymbolTable,queue<char*> *queueForUpdatingServer)
 {
-    //if right- connefct to connect and send the value
-    const char *rightArrow = "\x04->";
-    const char *symbol = reinterpret_cast<const char *>(str + 2);
-    this->simName = *(str + 4);
-    if (strcmp(symbol, rightArrow) == 0)
+    //if right- connect and send the value
+    if (this->direction)
     {
+        string temp = *(str + 1);
         //create the string with the sim name and value
-        this->value = stod(*(str + 1));
-        this->updateInfoString->append("set");
-        this->updateInfoString->append(this->simName);
-        this->updateInfoString->append(to_string(this->value));
-        this->updateInfoString->append((" "));
-        this->updateInfoString->append("/r/n");
-//        outputSymbolTable->outputMap->insert(this->updateInfoString, );
+        this->value = Parser::checkExpression(&temp, outputSymbolTable);
+        this->updateInfoString += "set ";
+        this->updateInfoString += this->simName;
+        this->updateInfoString += " ";
+        this->updateInfoString += to_string(this->value);
+        this->updateInfoString +=" ";
+        this->updateInfoString += "/r/n";
         //enter into the queue. Queue is meant to hold the strings of all the sim names
-        queueForUpdatingServer->push((char*)(this->updateInfoString));
+        queueForUpdatingServer->push((char*)(&this->updateInfoString));
     }
-    return 0;
+    return 2;
 }
-//
-//char* getString(char* str)
-//{
-//    return str;
-//}
