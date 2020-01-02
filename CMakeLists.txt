@@ -6,4 +6,4 @@ set(CMAKE_CXX_FLAGS -pthread)
 
 add_executable(PleaseWork main.cpp Command.h Command.cpp OpenServerCommand.cpp OpenServerCommand.h
         DefineVarCommand.cpp DefineVarCommand.h Var.cpp Var.h ConnectCommand.cpp ConnectCommand.h InputSymbolTable.cpp
-        InputSymbolTable.h OutputSymbolTable.cpp OutputSymbolTable.h Parser.cpp Parser.h ConditionParser.cpp ConditionParser.h)
+        InputSymbolTable.h OutputSymbolTable.cpp OutputSymbolTable.h Parser.cpp Parser.h ConditionParser.cpp ConditionParser.h Expression.cpp Expression.h)

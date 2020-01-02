@@ -9,6 +9,7 @@
 #include "InputSymbolTable.h"
 #include "ConnectCommand.h"
 #include "Parser.h"
+#include "Expression.h"
 
 using namespace std;
 
@@ -16,7 +17,8 @@ vector<string> *Lexer(const string &file);
 
 unordered_map<string, Command *> *firstMap();
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     // read from file
     // get a string array of all the words from the file
     vector<string> *finalStringVector = Lexer(argv[1]);
@@ -25,12 +27,12 @@ int main(int argc, char *argv[]) {
     unordered_map<string, Command *> *firstMapCommands = firstMap();
 
     // initialize the Symbol table (I/O)
-    auto* outputSymbolTable = new OutputSymbolTable();
-    auto* inputSymbolTable = new InputSymbolTable();
+    auto *outputSymbolTable = new OutputSymbolTable();
+    auto *inputSymbolTable = new InputSymbolTable();
     //queue for updating sim
-    auto *queueForUpdatingServer = new queue<char*>;
+    auto *queueForUpdatingServer = new queue<char *>;
     // create parser
-    auto* parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable,
+    auto *parser = new Parser(finalStringVector, firstMapCommands, outputSymbolTable, inputSymbolTable,
                               queueForUpdatingServer);
     // parse
     parser->parse();

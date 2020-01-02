@@ -29,6 +29,8 @@ public:
         this->queueForUpdatingServer = queue;
     }
     void parse();
+
+     static double checkExpression(string *str, OutputSymbolTable* outputTable );
 };
 
 
