@@ -21,7 +21,7 @@ void Parser::parse() {
             c = firstMapCommands->at(commandName);
         }
         // check if the key is a Var in the output Map
-        else {
+        else if (this->outputSymbolTable->outputMap->find(commandName) != this->outputSymbolTable->outputMap->end()) {
             c = this->outputSymbolTable->outputMap->at(commandName);
         }
 
