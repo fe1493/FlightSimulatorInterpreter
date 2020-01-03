@@ -5,6 +5,6 @@ FlySimulator is a project, where we were given a text file with different comman
 # Downloads/Files
 In order to work with the simulator, we need to install the application "FlightGear". We will also be working with a text file of all the commands, with which we will be able to communicate with the simulator
 
-#Installation of FlightGear
+# Installation of FlightGear
 Instructions for installation are on the following website
   https://www.flightgear.org/download/main-program/
