@@ -112,7 +112,7 @@ bool checkCondition(string str, OutputSymbolTable outputSymbolTable){
     double final1 = Parser::checkExpression(&val1, &outputSymbolTable);
     double final2 = Parser::checkExpression(&val2, &outputSymbolTable);;
     // switch according to the oper
-    if (oper == "="){
+    if (oper == "=="){
         if (final1 == final2){
             return true;
         }
