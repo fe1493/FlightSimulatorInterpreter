@@ -13,7 +13,7 @@ string removeSpace2(string str);
 int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
                              OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     // we calculate the jump at conditionVector function
-    int jump = 2;
+    int jump = 3;
     // copy all lines of the block (until you get '}')
     vector<string> *conditionVector = copyCommands(str + 2, &jump);
     if (*str == "while") {
@@ -23,14 +23,14 @@ int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
             string commandName = conditionVector->at(index);
             Command* c = nullptr;
             while(index < conditionVector->size()){
-                if (firstMapCommands->find(commandName) != firstMapCommands->end())
+                if (firstMapCommands->find(conditionVector->at(index)) != firstMapCommands->end())
                 {
-                    c = firstMapCommands->at(commandName);
+                    c = firstMapCommands->at(conditionVector->at(index));
                 }
                     // check if the key is a Var in the output Map
-                else if (outputSymbolTable->outputMap->find(commandName) != outputSymbolTable->outputMap->end())
+                else if (outputSymbolTable->outputMap->find(conditionVector->at(index)) != outputSymbolTable->outputMap->end())
                 {
-                    c = outputSymbolTable->outputMap->at(commandName);
+                    c = outputSymbolTable->outputMap->at(conditionVector->at(index));
                 }
                 try{
                     index += c->execute(&conditionVector->at(index), inputSymbolTable,
@@ -48,14 +48,14 @@ int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
             string commandName = conditionVector->at(index);
             Command* c = nullptr;
             while(index < conditionVector->size()){
-                if (firstMapCommands->find(commandName) != firstMapCommands->end())
+                if (firstMapCommands->find(conditionVector->at(index)) != firstMapCommands->end())
                 {
-                    c = firstMapCommands->at(commandName);
+                    c = firstMapCommands->at(conditionVector->at(index));
                 }
                     // check if the key is a Var in the output Map
-                else if (outputSymbolTable->outputMap->find(commandName) != outputSymbolTable->outputMap->end())
+                else if (outputSymbolTable->outputMap->find(conditionVector->at(index)) != outputSymbolTable->outputMap->end())
                 {
-                    c = outputSymbolTable->outputMap->at(commandName);
+                    c = outputSymbolTable->outputMap->at(conditionVector->at(index));
                 }
                 try{
                     index += c->execute(&conditionVector->at(index), inputSymbolTable,
@@ -85,20 +85,24 @@ vector<string> *copyCommands(string *str, int *jump) {
  */
 bool checkCondition(string str, OutputSymbolTable outputSymbolTable){
     // find the first char of the operator
-    unsigned long int found = str.find_first_of("<>=!");
+    unsigned long int found = str.find_first_of("><=!");
     // assignment of the first value (left in the condition)
     string val1 = str.substr(0, found);
+    string val2;
     // assignment of the operator (middle in the condition)
     string oper = "";
     oper += str.at(found);
     // check if the operator consist 2 char
     found++;
-    found = str.find_first_of("<>=!", found);
+    unsigned long int found2 = str.find_first_of("<>=!", found);
     // if the operator consist 2 char, update the operator
-    if (found != string::npos){
-        oper += str.at(found);
+    if (found2 != string::npos){
+        oper += str.at(found2);
+        val2 = str.substr(found2 + 1);
+    } else {
+        found2 = str.find_first_of("<>=!");
+        val2 = str.substr(found2 + 1);
     }
-    string val2 = str.substr(found + 1);
     val2 = val2.substr(0, val2.length() - 1);
     // remove the spaces at the strings
     val1 = removeSpace2(val1);

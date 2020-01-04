@@ -7,6 +7,7 @@
 #include "Var.h"
 #include "OutputSymbolTable.h"
 #include "InputSymbolTable.h"
+#include "Parser.h"
 
 
 // *** DefineVarCommand execute ***
@@ -15,7 +16,7 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
     int jump;
     if (*(str + 3) == "sim"){
         jump = 5;
-
+        // const char *symbol = reinterpret_cast<const char *>(str + 2);
         string varName = *(str + 1);
         string varSim = *(str + 4);
         varSim = varSim.substr(1, varSim.length() - 2);
@@ -29,12 +30,13 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
     }
     else
     {
-        jump = 2;
+        jump = 3;
         Var *var = new Var();
         // var value can be ONE option:
         // 1. value of var from the input symbol table
         // 2. Expression
-        // var->value = calculate(str + 1);
+        string temp = *(str + 2);
+        var->value = to_string(Parser::checkExpression(&temp, outputSymbolTable));
         outputSymbolTable->outputMap->insert({*(str + 1), var});
     }
 

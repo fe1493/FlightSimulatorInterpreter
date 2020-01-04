@@ -18,7 +18,7 @@ public:
     virtual int execute(string *str, InputSymbolTable* inputSymbolTable,
                         OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
 
-    static int connectClient(string *str, bool *isClientConnect, queue<string> *queue);
+    static int connectClient(string *str, bool *isClientConnect, queue<string> *queue, OutputSymbolTable* outputSymbolTable);
     static void* sendMessage(queue<string> *queueForUpdatingServer, bool *isClientConnect);
     //
 

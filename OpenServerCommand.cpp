@@ -4,6 +4,7 @@
 
 #include "OpenServerCommand.h"
 #include "Var.h"
+#include "Parser.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <string>
@@ -24,18 +25,17 @@ int OpenServerCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
     return 2;
 }
 
-int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable *input)
-{
+int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable *input, OutputSymbolTable* outputSymbolTable) {
 
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (socketfd == -1)
-    {
+    if (socketfd == -1) {
         //error
         std::cerr << "Could not create a socket" << std::endl;
         return -1;
     }
-    int port = stoi(*(str + 1));
+    string temp = to_string(Parser::checkExpression((str + 1), outputSymbolTable));
+    int port = stoi(temp);
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4
@@ -46,19 +46,15 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
     // to a number that the network understands.
 
     //the actual bind command
-    if (::bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1)
-    {
+    if (::bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
         std::cerr << "Could not bind the socket to an IP" << std::endl;
         return -2;
     }
     //making socket listen to the port
-    if (listen(socketfd, 5) == -1)
-    { //can also set to SOMAXCON (max connections)
+    if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
         std::cerr << "Error during listening command" << std::endl;
         return -3;
-    }
-    else
-    {
+    } else {
         std::cout << "Server is now listening ..." << std::endl;
     }
 
@@ -66,8 +62,7 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
     int client_socket = accept(socketfd, (struct sockaddr *) &address,
                                (socklen_t *) &address);
 
-    if (client_socket == -1)
-    {
+    if (client_socket == -1) {
         std::cerr << "Error accepting client" << std::endl;
         return -4;
     }
@@ -83,34 +78,21 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
     // create an array with the simulators keys, according to the xml order
     vector<string> *simArray = createSimArray();
     // update the SIM FIELD of every variable at input SYMBOLE TABLE
-    for (int i = 0; i < simArray->size(); i++)
-    {
+    for (int i = 0; i < simArray->size(); i++) {
         input->inputMap->at(simArray->at(i))->simName = simArray->at(i);
     }
     string val = "";
-    for (char c: buffer)
-    {
-        if (c == ',')
-        {
-            if (isNum(val))
-            {
-                input->inputMap->at(simArray->at(indexVar))->value = stod(val);
-                val = "";
-                indexVar++;
-            }
-        }
-        if (c == '\n')
-        {
-            if (isNum(val))
-            {
-                input->inputMap->at(simArray->at(indexVar))->value = stod(val);
-                val = "";
-                // end of block. reset the index to next block.
-                indexVar = 0;
-            }
-        }
-        else
-        {
+    for (char c: buffer) {
+        if (c == ',') {
+            input->inputMap->at(simArray->at(indexVar))->value = val;
+            val = "";
+            indexVar++;
+        } else if (c == '\n') {
+            input->inputMap->at(simArray->at(indexVar))->value = val;
+            val = "";
+            // end of block. reset the index to next block.
+            indexVar = 0;
+        } else {
             // create the value
             val += c;
         }
@@ -118,38 +100,28 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
 
     // let MAIN go on
     *isConnect = true;
-
+    val = "";
     // keep get values from the simulator
-    while (isConnect)
-    {
-        buffer[1024] = {0};
+    while (isConnect) {
+        //buffer[1024] = {0};
         valread = read(client_socket, buffer, 1024);
         // *** here we need to put all the value into the symbol table. ***
         // we need to use the xml file the know which variable belongs to value
         std::cout << buffer << std::endl;
-        for (char c: buffer)
-        {
-            if (c == ',')
-            {
-                if (isNum(val))
-                {
-                    input->inputMap->at(simArray->at(indexVar))->value = stod(val);
-                    val = "";
-                    indexVar++;
-                }
-            }
-            if (c == '\n')
-            {
-                if (isNum(val))
-                {
-                    input->inputMap->at(simArray->at(indexVar))->value = stod(val);
-                    val = "";
-                    // end of block. reset the index to next block.
-                    indexVar = 0;
-                }
-            }
-            else
-            {
+        indexVar = 0;
+        for (char c: buffer) {
+            if (c == ',') {
+                input->inputMap->at(simArray->at(indexVar))->value = val;
+                val = "";
+                indexVar++;
+            } else if (c == '\n') {
+                input->inputMap->at(simArray->at(indexVar))->value = val;
+                val = "";
+                // end of block. reset the index to next block.
+                indexVar = 0;
+            } else if (c == '\000') {
+                break;
+            } else {
                 // create the value
                 val += c;
             }
@@ -157,8 +129,7 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
     }
 }
 
-vector<string> *createSimArray()
-{
+vector<string> *createSimArray() {
     vector<string> *simArray = new vector<string>{};
     simArray->push_back("/instrumentation/airspeed-indicator/indicated-speed-kt");
     simArray->push_back("/sim/time/warp");
@@ -199,26 +170,21 @@ vector<string> *createSimArray()
     return simArray;
 }
 
-int isNum(const string &num)
-{
+int isNum(const string &num) {
     int points = 0;
-    for (size_t i = 0; i < num.length(); i++)
-    {
-        if (num[i] == '.')
-        {
+    for (size_t i = 0; i < num.length(); i++) {
+        if (num[i] == '.') {
             points++;
-        }
-        else if (!isdigit(num[i]))
-        {
+        } else if (!isdigit(num[i])) {
             return false;
         }
     }
-    if (points > 1)
-    {
+    if (points > 1) {
         return false;
-    }
-    else
-    {
+    } else {
         return true;
     }
 }
+
+
+
