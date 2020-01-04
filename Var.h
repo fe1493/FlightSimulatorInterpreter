@@ -20,7 +20,7 @@ public:
     string simName;
     string* updateInfoString;
     int direction;
-    double value;
+    string value;
 
     virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
                         OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);

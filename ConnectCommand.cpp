@@ -4,6 +4,7 @@
 
 #include "ConnectCommand.h"
 #include "Var.h"
+#include "Parser.h"
 #include <string>
 #include <unordered_map>
 #include <iostream>
@@ -36,7 +37,7 @@ void *ConnectCommand::sendMessage(queue<string> *queueForUpdatingServer, bool *i
     }
 }
 
-int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<string> *queue) {
+int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<string> *queue, OutputSymbolTable* outputSymbolTable) {
     //create socket
     ConnectCommand::client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (ConnectCommand::client_socket == -1) {
@@ -44,7 +45,8 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<stri
         std::cerr << "Could not create a socket" << std::endl;
         return -1;
     }
-    int port = stoi(*(str + 2));
+    string temp = to_string(Parser::checkExpression((str + 2), outputSymbolTable));
+    int port = stoi(temp);
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;//IP4

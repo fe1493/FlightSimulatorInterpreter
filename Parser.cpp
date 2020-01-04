@@ -36,7 +36,7 @@ void Parser::parse() {
             // open new thread, that create a new socket and wait to a client.
             // this thread stop the program, until the client connect and print the first line
             thread serverThread(OpenServerCommand::openServer, &finalStringVector->at(index), &isServerConnect,
-                                this->inputSymbolTable);
+                                this->inputSymbolTable, this->outputSymbolTable);
             // while the client don't connect, stop the program
             while (!isServerConnect)
             {
@@ -47,7 +47,7 @@ void Parser::parse() {
         if (commandName == "connectControlClient")
         {
             thread clientThread(ConnectCommand::connectClient, &finalStringVector->at(index),
-                                &isClientConnect, this->queueForUpdatingServer);
+                                &isClientConnect, this->queueForUpdatingServer, this->outputSymbolTable);
             while (!isClientConnect)
             {
                 //clientThread.join();

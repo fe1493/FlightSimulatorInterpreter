@@ -30,13 +30,13 @@ int DefineVarCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
     }
     else
     {
-        jump = 2;
+        jump = 3;
         Var *var = new Var();
         // var value can be ONE option:
         // 1. value of var from the input symbol table
         // 2. Expression
         string temp = *(str + 2);
-        var->value = Parser::checkExpression(&temp, outputSymbolTable);
+        var->value = to_string(Parser::checkExpression(&temp, outputSymbolTable));
         outputSymbolTable->outputMap->insert({*(str + 1), var});
     }
 

@@ -9,6 +9,7 @@
 #include <cstring>
 #include "Command.h"
 #include "OutputSymbolTable.h"
+#include "Parser.h"
 #include <arpa/inet.h>
 
 // *** Print Command ***
@@ -26,7 +27,7 @@ int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
     {
         if (outputSymbolTable->outputMap->find(text) != outputSymbolTable->outputMap->end())
         {
-            double value = outputSymbolTable->outputMap->at(text)->value;
+            string value = to_string(Parser::checkExpression(&outputSymbolTable->outputMap->at(text)->value, outputSymbolTable));
             cout << value << endl;
         }
     }
@@ -37,7 +38,8 @@ int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
 int SleepCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
                           OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer)
 {
-    int milliseconds = stoi(*(str + 1));
+    string temp = to_string(Parser::checkExpression((str + 1), outputSymbolTable));
+    int milliseconds = stoi(temp);
     this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
     return 2;
 }

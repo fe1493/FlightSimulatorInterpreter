@@ -9,6 +9,8 @@
 
 using namespace std;
 
+string removeSpaces(string str);
+
 //variable class
 //Constructor
 Variable::Variable(string vName, double vValue) {
@@ -227,7 +229,14 @@ double Value::calculate() {
 //    result.push_back(str.substr(start));
 //    return result;
 //}
-
+string removeSpaces(string input)
+{
+    for (int i = input.size()-1; i >= 0; --i) {
+        if(input[i] == ' ')
+            input.erase(i, 1);
+    }
+    return input;
+}
 
 Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable) {
     queue<string> myQueue;
@@ -239,9 +248,10 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable) {
     // Assignment of variables
     string stringWithValues = str;
     for (pair<string, Var *> pair : *outputTable->outputMap) {
-        stringWithValues = regex_replace(stringWithValues, regex(pair.first), to_string(pair.second->value));
+        stringWithValues = regex_replace(stringWithValues, regex(pair.first), pair.second->value);
     }
-
+    // remove spaces
+    stringWithValues = removeSpaces(stringWithValues);
     unsigned long find = stringWithValues.find_first_of("+-*/()_");
     while (find != string::npos) {
         if (find != last) {

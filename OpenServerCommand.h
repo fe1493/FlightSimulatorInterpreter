@@ -14,7 +14,7 @@
     public:
         virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
                             OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
-        static int openServer(string *str, bool* isConnect, InputSymbolTable *input);
+        static int openServer(string *str, bool* isConnect, InputSymbolTable *input, OutputSymbolTable* outputSymbolTable);
     };
 
 
