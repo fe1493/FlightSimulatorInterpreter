@@ -52,8 +52,9 @@ vector<string> *Lexer(const string &fileName) {
     //go over each line
     while (getline(myFile, line)) {
         //code from EX1
-        unsigned long int found = line.find_first_of(" \t,()= ");
+        unsigned long int found = line.find_first_of(" \t,()=");
         unsigned long int lastFound = 0;
+        bool assignment = false;
         string lastWord;
 
         while (found != string::npos) {
@@ -65,13 +66,39 @@ vector<string> *Lexer(const string &fileName) {
                 finalStringVector->push_back(temp);
                 break;
             }
+            if (lastWord == "if"){
+                // line - 6 = all the line except the "while" and "{"
+                string temp = line.substr(lastFound, line.length() - 3);
+                temp = removeSpace(temp);
+                finalStringVector->push_back(temp);
+                break;
+            }
             // case 2: Print. insert the text to the next token
-            if (lastWord == "Print") {
+            if (lastWord == "Print" || lastWord == "openDataServer") {
                 unsigned long int foundStart = line.find_first_of('(');
                 // line - 7 = all the line except the "Print" and ")" in the end of the line
                 string temp = line.substr(foundStart + 1, line.length() - (foundStart + 2));
                 temp = removeSpace(temp);
                 finalStringVector->push_back(temp);
+                break;
+            }
+            if (lastWord == "\"127.0.0.1\""){
+                // line - 7 = all the line except the "Print" and ")" in the end of the line
+                string temp = line.substr(lastFound, line.length() - (lastFound + 1));
+                temp = removeSpace(temp);
+                finalStringVector->push_back(temp);
+                break;
+            }
+            if (line.at(found) == '='){
+                if (line.at(found - 1) != ' '){
+                    string temp2 = line.substr(0, found);
+                    temp2 = removeSpace(temp2);
+                    finalStringVector->push_back(temp2);
+                }
+                string temp = line.substr(found + 1, line.length() - (found));
+                temp = removeSpace(temp);
+                finalStringVector->push_back(temp);
+                assignment = true;
                 break;
             }
             if (found != lastFound) {
@@ -94,7 +121,8 @@ vector<string> *Lexer(const string &fileName) {
             lastFound = found;
             found = line.find_first_of(" ,()=\t", found);
         }
-        if (lastFound != (line.length()) && (lastWord != "while") && (lastWord != "Print")) {
+        if (lastFound != (line.length()) && (lastWord != "while") && (lastWord != "Print") &&
+        (lastWord != "openDataServer") && (lastWord != "if") && (!assignment) && (lastWord != "\"127.0.0.1\"")) {
             string temp = line.substr(lastFound, line.length());
             temp = removeSpace(temp);
             finalStringVector->push_back(temp);
