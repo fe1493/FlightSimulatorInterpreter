@@ -8,7 +8,7 @@ In order to work with the simulator, we need to install the application "FlightG
 
 # Installation of FlightGear
 
-Instructions for installation are on the following website\n
+Instructions for installation are on the following website : 
   https://www.flightgear.org/download/main-program/
  
  # How To Compile
