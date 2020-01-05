@@ -19,12 +19,23 @@ vector<double> *createValArray(char buffer);
 int isNum(const string &num);
 
 // *** OpenServerCommand execute ***
-
+/// return the jump number in the command vector
+/// \param str
+/// \param inputSymbolTable
+/// \param outputSymbolTable
+/// \param queueForUpdatingServer
+/// \return
 int OpenServerCommand::execute(string *str, InputSymbolTable *inputSymbolTable,
                                OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     return 2;
 }
 
+/// open server, and listening. then the simulator connect and we get the value from the simulator.
+/// \param str
+/// \param isConnect
+/// \param input
+/// \param outputSymbolTable
+/// \return 0 if succeed
 int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable *input, OutputSymbolTable* outputSymbolTable) {
 
     //create socket
@@ -72,7 +83,7 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
     //reading from client and print the input
     char buffer[1024] = {0};
     int valread = read(client_socket, buffer, 1024);
-    std::cout << buffer << std::endl;
+    // std::cout << buffer << std::endl;
     // the index of the var in the simArray
     int indexVar = 0;
     // create an array with the simulators keys, according to the xml order
@@ -107,7 +118,7 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
         valread = read(client_socket, buffer, 1024);
         // *** here we need to put all the value into the symbol table. ***
         // we need to use the xml file the know which variable belongs to value
-        std::cout << buffer << std::endl;
+        //std::cout << buffer << std::endl;
         indexVar = 0;
         for (char c: buffer) {
             if (c == ',') {
@@ -127,8 +138,12 @@ int OpenServerCommand::openServer(string *str, bool *isConnect, InputSymbolTable
             }
         }
     }
+    cout << "Server thread closed" << endl;
+    return 0;
 }
 
+/// create new array with the values of simulate variable
+/// \return vector
 vector<string> *createSimArray() {
     vector<string> *simArray = new vector<string>{};
     simArray->push_back("/instrumentation/airspeed-indicator/indicated-speed-kt");
@@ -168,22 +183,6 @@ vector<string> *createSimArray() {
     simArray->push_back("/controls/switches/master-alt");
     simArray->push_back("/engines/engine/rpm");
     return simArray;
-}
-
-int isNum(const string &num) {
-    int points = 0;
-    for (size_t i = 0; i < num.length(); i++) {
-        if (num[i] == '.') {
-            points++;
-        } else if (!isdigit(num[i])) {
-            return false;
-        }
-    }
-    if (points > 1) {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 

@@ -86,7 +86,7 @@ int ConnectCommand::connectClient(string *str, bool *isClientConnect, queue<stri
 
     //close the socket
     close(ConnectCommand::client_socket);
-
+    cout << "Connect thread closed" << endl;
 }
 
 ///

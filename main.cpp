@@ -18,7 +18,10 @@ vector<string> *Lexer(const string &file);
 unordered_map<string, Command *> *firstMap();
 
 string removeSpace(string str);
-
+/// the main function of the program
+/// \param argc
+/// \param argv
+/// \return
 int main(int argc, char *argv[]) {
     // read from file
     // get a string array of all the words from the file
@@ -37,8 +40,12 @@ int main(int argc, char *argv[]) {
                               queueForUpdatingServer);
     // parse
     parser->parse();
+    return 0;
 }
 
+/// split the text according to the commands
+/// \param fileName
+/// \return new vector with all the commands
 vector<string> *Lexer(const string &fileName) {
     //the file that we will read into
     ifstream myFile;
@@ -132,6 +139,8 @@ vector<string> *Lexer(const string &fileName) {
     return finalStringVector;
 }
 
+/// create the map of the mainly commands of the program
+/// \return new map
 unordered_map<string, Command *> *firstMap() {
     unordered_map<string, Command *> *firstMapCommands = new unordered_map<string, Command *>{};
     // *** OpenServerCommand ***

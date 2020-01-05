@@ -10,6 +10,12 @@ vector<string> *copyCommands(string *str, int *index);
 bool checkCondition(string str, OutputSymbolTable outputSymbolTable);
 string removeSpace2(string str);
 
+/// run all the Commands of the loop
+/// \param str
+/// \param inputSymbolTable
+/// \param outputSymbolTable
+/// \param queueForUpdatingServer
+/// \return int - num of the jump in the Command Vector
 int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
                              OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer) {
     // we calculate the jump at conditionVector function
@@ -70,6 +76,10 @@ int ConditionParser::execute(string *str, InputSymbolTable *inputSymbolTable,
     return jump;
 }
 
+/// copy the commands that need to be at the loop
+/// \param str
+/// \param jump
+/// \return new vector with commands
 vector<string> *copyCommands(string *str, int *jump) {
     auto *conditionVector = new vector<string>{};
     while (*str != "}") {
@@ -80,9 +90,10 @@ vector<string> *copyCommands(string *str, int *jump) {
     return conditionVector;
 }
 
-/*
- * checkCondition - check the condition of the while/if
- */
+/// checkCondition - check the condition of the while/if
+/// \param str
+/// \param outputSymbolTable
+/// \return
 bool checkCondition(string str, OutputSymbolTable outputSymbolTable){
     // find the first char of the operator
     unsigned long int found = str.find_first_of("><=!");
@@ -149,9 +160,9 @@ bool checkCondition(string str, OutputSymbolTable outputSymbolTable){
         return false;
     }
 }
-/*
- *  get string and remove the spaces at the beginning and the end of the string
- */
+/// remove spaces at the start and the ene of the string
+/// \param str
+/// \return string
 string removeSpace2(string str){
     while (str.at(0) == ' '){
         str = str.substr(1);

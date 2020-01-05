@@ -8,13 +8,19 @@
 #include "ConnectCommand.h"
 #include "Expression.h"
 
+/*
+ * run the Commands from the fly.txt
+ */
 void Parser::parse() {
+    // index of the current command
     int index = 0;
+    // true - when the server listening
     bool isServerConnect = false;
+    // true - when the client connect
     bool isClientConnect = false;
+    // the current command
     Command *c;
-    //Parser::checkExpression(this->finalStringVector, this->outputSymbolTable);
-    //parser
+
     while (index < finalStringVector->size())
     {
         string commandName = finalStringVector->at(index);
@@ -61,9 +67,16 @@ void Parser::parse() {
         catch(const char* e) {
             throw ("unknown Command");
         }
+        // close the thread
+        isServerConnect = false;
+        isClientConnect = false;
     }
 }
 
+/// check the condition of the loop
+/// \param str
+/// \param outputTable
+/// \return true or false
  double Parser::checkExpression(string * str,OutputSymbolTable* outputTable )
 {
     //create a new interpreter and expression

@@ -2,15 +2,10 @@
 
 #include <iostream>
 #include <thread>
-#include <sys/socket.h>
 #include <string>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <cstring>
 #include "Command.h"
 #include "OutputSymbolTable.h"
 #include "Parser.h"
-#include <arpa/inet.h>
 ///
 // *The execute for the printCommand, prints the information*
 /// \param str - string of the commands
