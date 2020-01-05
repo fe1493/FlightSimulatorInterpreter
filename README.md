@@ -15,7 +15,7 @@ Instructions for installation are on the following website :
  
 In order for the code to compile, the program needs to be provided with a text file that list all of the commands of the flight simulator. This file should be provided as a program argument. 
 
-To compile from the command line: use 
+To compile from the command line use: 
 g++ -std=c++14 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.out -pthread 
 
  # How To Run the Program
