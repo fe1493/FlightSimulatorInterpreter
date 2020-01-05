@@ -6,7 +6,6 @@
 #include "Var.h"
 #include "Parser.h"
 #include <string>
-#include <unordered_map>
 #include <iostream>
 #include <sys/socket.h>
 #include <unistd.h>

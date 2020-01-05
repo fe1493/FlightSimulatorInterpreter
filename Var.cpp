@@ -25,16 +25,3 @@ int Var ::execute(string *str, InputSymbolTable* inputSymbolTable,
     }
     return 2;
 }
-
-/*
- *  get string and remove the spaces at the beginning and the end of the string
- */
-string removeSpace3(string str) {
-    while (str.at(0) == ' ') {
-        str = str.substr(1);
-    }
-    while (str.at(str.length() - 1) == ' ') {
-        str = str.substr(0, str.length() - 1);
-    }
-    return str;
-}

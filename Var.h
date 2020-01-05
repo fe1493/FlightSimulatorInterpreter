@@ -14,21 +14,16 @@
 
 
 // *** Var Class ***
-class Var : public Command
-{
+class Var : public Command {
 public:
     string simName;
-    string* updateInfoString;
+    string *updateInfoString;
     int direction;
     string value;
 
-    virtual int execute(string* str, InputSymbolTable* inputSymbolTable,
-                        OutputSymbolTable* outputSymbolTable,queue<string> *queueForUpdatingServer);
-
-
-
+    virtual int execute(string *str, InputSymbolTable *inputSymbolTable,
+                        OutputSymbolTable *outputSymbolTable, queue<string> *queueForUpdatingServer);
 };
-
 
 
 #endif //PLEASEWORK_VAR_H

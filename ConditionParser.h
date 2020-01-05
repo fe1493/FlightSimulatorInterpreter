@@ -7,6 +7,9 @@
 
 #include "Command.h"
 
+/*
+ * run the command in the loop
+ */
 class ConditionParser: public Command {
 private:
     unordered_map<string, Command *> *firstMapCommands;

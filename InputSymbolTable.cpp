@@ -5,6 +5,9 @@
 #include "InputSymbolTable.h"
 #include "Var.h"
 
+/*
+ * hold all the value that we get from the simulator
+ */
 InputSymbolTable::InputSymbolTable()
 {
     this->inputMap->insert({"/instrumentation/airspeed-indicator/indicated-speed-kt", new Var()});

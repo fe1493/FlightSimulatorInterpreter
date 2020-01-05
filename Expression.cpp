@@ -263,7 +263,10 @@ string removeSpaces(string input)
     }
     return input;
 }
-
+///
+/// \param str
+/// \param outputTable
+/// \return
 Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
 {
     queue<string> myQueue;
@@ -518,6 +521,9 @@ vector<string> Interpreter::checkIfUnary(vector<string> str)
     return str;
 }
 
+///
+/// \param queue
+/// \return
 Expression *Interpreter::findAnswer(queue<string> queue)
 {
     stack<Expression *> expStack;

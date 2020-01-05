@@ -18,7 +18,6 @@ public:
     InputSymbolTable* inputSymbolTable;
     queue<string> *queueForUpdatingServer;
 
-//
     Parser(vector<string> *stringVector,unordered_map<string, Command *> *firstMap,
             OutputSymbolTable* outputTable, InputSymbolTable* inputTable, queue<string>* queue)
             {
