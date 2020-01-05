@@ -4,10 +4,8 @@
 
 #include "InputSymbolTable.h"
 #include "Var.h"
-
-/*
- * hold all the value that we get from the simulator
- */
+///
+///Input the instructions into the input map- the map which holds the info we get from the simulator
 InputSymbolTable::InputSymbolTable()
 {
     this->inputMap->insert({"/instrumentation/airspeed-indicator/indicated-speed-kt", new Var()});
@@ -46,5 +44,4 @@ InputSymbolTable::InputSymbolTable()
     this->inputMap->insert({"/controls/switches/master-bat", new Var()});
     this->inputMap->insert({"/controls/switches/master-alt", new Var()});
     this->inputMap->insert({"/engines/engine/rpm", new Var()});
-    this->inputMap->insert({"/controls/gear/brake-right", new Var()});
 }

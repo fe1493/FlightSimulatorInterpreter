@@ -160,7 +160,7 @@ bool checkCondition(string str, OutputSymbolTable outputSymbolTable){
         return false;
     }
 }
-/// remove spaces at the start and the ene of the string
+/// remove spaces at the start and the end of the string
 /// \param str
 /// \return string
 string removeSpace2(string str){

@@ -154,107 +154,9 @@ Value::Value(double val) : value(val) {
 double Value::calculate() {
     return this->value;
 }
-
-//Interpreter class
-
-//void Interpreter::setVariables(string str, OutputSymbolTable *outputTable, InputSymbolTable *inputTable) {
-//    vector<string> variableAssignments;
-//
-//    if (str.empty()) {
-//        throw "No assignment found!!";
-//    }
-////    bool thereIsASemicolon = checkIfThereIsSemicolon(str);
-//    if (str =  )
-//    {
-//       // variableAssignments = splitString(str, ';');
-//        for (string assignment : variableAssignments)
-//        {
-//            vector<string> result = splitString(assignment, '=');
-//            if (result.size() != 2)
-//            {
-//                throw "Invalid assignment!!";
-//            }
-//
-//            if (!isValidVariable(result[0]) || !isANumber(result[1]))
-//            {
-//                throw "Invalid input";
-//            }
-//            double val = stod(result[1]);
-//            //auto itr = variables.find(val);
-//            variables.insert(pair<string, double>(result[0], val));
-//        }
-//    }
-//    else
-//    {
-//        vector<string> result = splitString(str, '=');
-//        for (string assignment : result)
-//        {
-//
-//            if (result.size() != 2)
-//            {
-//                throw "Invalid assignment!!";
-//            }
-//
-//            if (!isValidVariable(result[0]) || !isANumber(result[1]))
-//            {
-//                throw "Invalid input";
-//            }
-//            double val = stod(result[1]);
-//            //auto itr = variables.find(val);
-//            variables[result[0]] = val;
-//        }
-//    }
-//}
-
-//bool Interpreter::checkIfThereIsSemicolon(string str)
-//{
-//    for (char c : str)
-//    {
-//        if (c == ';')
-//        {
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//bool Interpreter::isValidVariable(string str)
-//{
-//    if (str.empty() || !isCharachter(str[0]) || str[str.length() - 1] == '_')
-//    {
-//        return false;
-//    }
-//
-//    for (char c : str)
-//    {
-//        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || (c <= '9' && c >= '0')))
-//        {
-//            return false;
-//        }
-//    }
-//    return true;
-//}
-//
-//bool Interpreter::isCharachter(char c)
-//{
-//    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
-//
-//}
-//
-//
-//vector<string> Interpreter::splitString(string str, char delim)
-//{
-//    unsigned long start = 0, end;
-//    vector<string> result;
-//    while((end = str.find(delim, start)) != string :: npos)
-//    {
-//        result.push_back(str.substr(start, end - start));
-//        // end plus length of delimiter
-//        start = end + 1;
-//    }
-//    result.push_back(str.substr(start));
-//    return result;
-//}
+/// *erases the spaces in a string*
+/// \param input- the string to remove the spaces
+/// \return the string without spaces
 string removeSpaces(string input)
 {
     for (int i = input.size()-1; i >= 0; --i) {
@@ -263,10 +165,11 @@ string removeSpaces(string input)
     }
     return input;
 }
-///
-/// \param str
-/// \param outputTable
-/// \return
+
+/// *the function interprets the expression we get using the shunting yard algorithm*
+/// \param str - the string that we need to interpret
+/// \param outputTable -- the values in the output table we are working with
+/// \return the interperted expression
 Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
 {
     queue<string> myQueue;
@@ -284,6 +187,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
     // remove spaces
     stringWithValues = removeSpaces(stringWithValues);
     unsigned long find = stringWithValues.find_first_of("+-*/()_");
+    //organize the string
     while (find != string::npos)
     {
         if (find != last)
@@ -300,14 +204,19 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
     {
         temp.push_back(stringWithValues.substr(last, stringWithValues.length()));
     }
+    //check if there are any unary operators in the string
     stringOfOperators = checkIfUnary(temp);
+
+    //shunting yard algorithm
     for (unsigned long i = 0; i < stringOfOperators.size(); i++)
     {
+        //unary operators
         if (stringOfOperators[i] == "#" || stringOfOperators[i] == "%")
         {
             myStack.push(stringOfOperators[i]);
             continue;
         }
+        //multiplication
         if (stringOfOperators[i] == "*")
         {
             if (myStack.empty())
@@ -329,6 +238,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             }
             myStack.push("*");
         }
+        //division
         else if (stringOfOperators[i] == "/")
         {
             if (myStack.empty())
@@ -357,6 +267,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             }
             myStack.push(stringOfOperators[i]);
         }
+        //addition
         else if (stringOfOperators[i] == "+")
         {
             if (myStack.empty())
@@ -364,6 +275,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                 myStack.push(stringOfOperators[i]);
                 continue;
             }
+            //take out unary operators and put in queue
             if (myStack.top() == "%" || myStack.top() == "#")
             {
                 myQueue.push(myStack.top());
@@ -371,10 +283,8 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             }
             if (!myStack.empty())
             {
-//                if (myStack.top() == "+")
-//                {
-//                    throw "Cant Have 2 Additions in a row- Illegal Math equation";
-//                }
+
+                //take out stronger operators and put in queue
                 while (myStack.top() == "*" || myStack.top() == "/" || myStack.top() == "-")
                 {
                     if (myStack.empty())
@@ -390,8 +300,10 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                     }
                 }
             }
+            //push into stack
             myStack.push(stringOfOperators[i]);
         }
+        //subtraction
         else if (stringOfOperators[i] == "-")
         {
             if (myStack.empty())
@@ -399,13 +311,13 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                 myStack.push(stringOfOperators[i]);
                 continue;
             }
-            //unary
+            //take out unary operators and put in queue
             if (myStack.top() == "%" || myStack.top() == "#")
             {
                 myQueue.push(myStack.top());
                 myStack.pop();
             }
-
+            //take out stronger operators and put in queue
             while ((myStack.top() == "*" || myStack.top() == "/" ||  myStack.top() == "+"))
             {
                 if (myStack.empty())
@@ -419,8 +331,10 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                     break;
                 }
             }
+            //push into stack
             myStack.push(stringOfOperators[i]);
         }
+        //left parentheses
         else if (stringOfOperators[i] == "(")
         {
             if (myStack.empty())
@@ -453,6 +367,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                 myStack.pop();
             }
         }
+        //right parentheses
         else if (stringOfOperators[i] == ")")
         {
             while (myStack.top() != "(")
@@ -471,6 +386,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             }
             myStack.pop();
         }
+        //if we read a number
         else if (isANumber(stringOfOperators[i]))
         {
             myQueue.push(stringOfOperators[i]);
@@ -480,6 +396,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             throw "Invalid Symbol";
         }
     }
+    //empty the stack
     while (!myStack.empty())
     {
         if (myStack.top() == "(" || myStack.top() == ")")
@@ -493,26 +410,34 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             myStack.pop();
         }
     }
+    //get expression
     Expression *resultOfExpression = findAnswer(myQueue);
     return resultOfExpression;
 }
 
+/// *checks if there are unary operators*
+/// \param str -string of operators which we check if there are any unary operators
+/// \return -- the string with the unary operators
 vector<string> Interpreter::checkIfUnary(vector<string> str)
 {
+    //if unary plus
     if (str[0] == "+")
     {
         str[0] = "#";
     }
+    //if unary minus
     if (str[0] == "-")
     {
         str[0] = "%";
     }
     for (unsigned long i = 0; i < str.size(); i++)
     {
+        //check for unary plus
         if (str[i] == "+" && !isANumber(str[i - 1]))
         {
             str[i] = "#";
         }
+        //check for unary minus
         if (str[i] == "-" && !isANumber(str[i - 1]))
         {
             str[i] = "%";
@@ -521,9 +446,9 @@ vector<string> Interpreter::checkIfUnary(vector<string> str)
     return str;
 }
 
-///
-/// \param queue
-/// \return
+/// *the function that calcualtes the expression of the answer to our equation*
+/// \param queue --the queue that holds the equation after the shunting yard algorithm
+/// \return --the answer of the equatiomn which is an expression
 Expression *Interpreter::findAnswer(queue<string> queue)
 {
     stack<Expression *> expStack;
@@ -538,6 +463,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             expStack.push(new Value(stod(queue.front())));
             queue.pop();
         }
+        //if unary mimus
         else if (queue.front() == "%")
         {
             if (!expStack.empty())
@@ -552,6 +478,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
                 throw "Missing digit to put unary on";
             }
         }
+        //if unary plus
         else if (queue.front() == "#")
         {
             Expression *val = expStack.top();
@@ -559,6 +486,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             expStack.push(new UPlus(val));
             queue.pop();
         }
+        //if mult
         else if (queue.front() == "*")
         {
             if (expStack.empty())
@@ -575,6 +503,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             expStack.push(new Mul(left, right));
             queue.pop();
         }
+        //if div
         else if (queue.front() == "/")
         {
             if (expStack.empty())
@@ -591,6 +520,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             expStack.push(new Div(left, right));
             queue.pop();
         }
+        //if plus
         else if (queue.front() == "+")
         {
             if (expStack.empty())
@@ -607,6 +537,7 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             expStack.push(new Plus(left, right));
             queue.pop();
         }
+        //if minus
         else if (queue.front() == "-")
         {
             if (expStack.empty())
@@ -624,14 +555,18 @@ Expression *Interpreter::findAnswer(queue<string> queue)
             queue.pop();
         }
     }
+    //the result
     result = expStack.top();
+    //empty stack
     while (!expStack.empty())
     {
         expStack.pop();
     }
     return result;
 }
-
+/// *checks if the string is a number*
+/// \param str --the string which we check if it is a number
+/// \return
 bool Interpreter::isANumber(string str) {
     for (char c : str) {
         if (!isdigit(c) && c != '.') {

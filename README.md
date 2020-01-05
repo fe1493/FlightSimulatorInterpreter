@@ -25,7 +25,7 @@ run the FlightGear application, in order to make a connection with the program. 
 
  # How The Program Works
  
- We first read the text file that is given to us and interpret the commands so we can use them. We are also going to have 3 threads running at tthe same time. One is the main, which runs the program, the second is a thread that maintains a connection with the server(which is the FlighGear program which we run after compiling our code) which sends commands to the server, in order to update the values in the server,  and the third is also in connection with the server, where the server updates our values. The constant communication with these threads enables a sharing of information between our program and the FlightGear and our program, that enables the plane to fly.
+ We first read the text file that is given to us and interpret the commands so we can use them. We are also going to have 3 threads running at the same time. One is the main, which runs the program, the second is a thread that maintains a connection with the server(which is the FlighGear program which we run after compiling our code) which sends commands to the server, in order to update the values in the server,  and the third is also in connection with the server, where the server updates our values. The constant communication with these threads enables a sharing of information between our program and the FlightGear and our program, that enables the plane to fly.
  
 
 

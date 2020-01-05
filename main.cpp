@@ -58,7 +58,7 @@ vector<string> *Lexer(const string &fileName) {
     string line;
     //go over each line
     while (getline(myFile, line)) {
-        //code from EX1
+    // split the fly.txt into a vector
         unsigned long int found = line.find_first_of(" \t,()=");
         unsigned long int lastFound = 0;
         bool assignment = false;
@@ -165,9 +165,13 @@ unordered_map<string, Command *> *firstMap() {
     return firstMapCommands;
 }
 
+
+///
 /*
  *  get string and remove the spaces at the beginning and the end of the string
  */
+/// \param str - the string which we take the spaces away from
+/// \return the string without spaces
 string removeSpace(string str){
     while (str.at(0) == ' '){
         str = str.substr(1);
