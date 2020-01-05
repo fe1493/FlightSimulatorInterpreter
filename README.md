@@ -4,7 +4,7 @@ FlySimulator is a project, where we are given a text file with different command
 
 # Downloads/Files
 
-In order to work with the simulator, we need to install the application "FlightGear". We will also be working with a text file of all the commands, with which we will be able to communicate with the simulator
+In order to work with the simulator, we need to install the application "FlightGear". We will also be working with a text file of all the commands, with which we will be able to communicate with the simulator. The text file will be one of the arguments of the program. We will also need a generic xml file, which holds all the infortmation of the data we will be using. In order for the program to work properly, the xml file needs to be in the flightgear/properties/data folder.
 
 # Installation of FlightGear
 
@@ -25,8 +25,12 @@ run the FlightGear application, in order to make a connection with the program. 
 
  # How The Program Works
  
- We first read the text file that is given to us and interpret the commands so we can use them. We are also going to have 3 threads running at the same time. One is the main, which runs the program, the second is a thread that maintains a connection with the server(which is the FlighGear program which we run after compiling our code) which sends commands to the server, in order to update the values in the server,  and the third is also in connection with the server, where the server updates our values. The constant communication with these threads enables a sharing of information between our program and the FlightGear and our program, that enables the plane to fly.
+ We first read the text file that is given to us and interpret the commands so we can use them. We are also going to have 3 threads running at the same time. One is the main, which runs the program, the second is a thread that maintains a connection with the server(which is the FlighGear program which we run after compiling our code) which sends commands to the server, in order to update the values in the server,  and the third is also in connection with the server, where the server updates our values. The constant communication with these threads enables a sharing of information between our program and the FlightGear, that enables the plane to fly. 
  
+  # Link To Github
+  
+  https://github.com/fe1493/PleaseWork
+
 
 
 
