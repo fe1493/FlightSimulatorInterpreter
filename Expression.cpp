@@ -368,10 +368,10 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
             }
             if (!myStack.empty())
             {
-                if (myStack.top() == "+")
-                {
-                    throw "Cant Have 2 Additions in a row- Illegal Math equation";
-                }
+//                if (myStack.top() == "+")
+//                {
+//                    throw "Cant Have 2 Additions in a row- Illegal Math equation";
+//                }
                 while (myStack.top() == "*" || myStack.top() == "/" || myStack.top() == "-")
                 {
                     if (myStack.empty())
@@ -403,7 +403,7 @@ Expression *Interpreter::interpret(string str, OutputSymbolTable *outputTable)
                 myStack.pop();
             }
 
-            while ((myStack.top() == "*" || myStack.top() == "/"))
+            while ((myStack.top() == "*" || myStack.top() == "/" ||  myStack.top() == "+"))
             {
                 if (myStack.empty())
                 {
