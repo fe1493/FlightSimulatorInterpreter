@@ -138,15 +138,10 @@ class Interpreter {
 private:
     map<string, double> variables;
 //    map<string, double> temp;
-    vector<string> splitString (string str, char delim);
     bool isANumber(string str);
-    bool isValidVariable(string str);
-    bool isCharachter(char c);
 public:
-    void setVariables (string variableToConvert, OutputSymbolTable* outputTable, InputSymbolTable* inputTable);
     Expression* interpret(string str,OutputSymbolTable* outputTable);
     vector<string> checkIfUnary(vector<string> str);
-    bool checkIfThereIsSemicolon (string str);
     Expression* findAnswer(queue<string> q);
 };
 

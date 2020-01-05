@@ -11,6 +11,13 @@
 #include "OutputSymbolTable.h"
 #include "Parser.h"
 #include <arpa/inet.h>
+///
+// *The execute for the printCommand, prints the information*
+/// \param str - string of the commands
+/// \param inputSymbolTable - table with all of the inputed info
+/// \param outputSymbolTable - table with all of the out info
+/// \param queueForUpdatingServer - queue which holds the strings that we need to send to the server in order to change the values
+/// \return - How many spaces to jump in the parser
 
 // *** Print Command ***
 int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
@@ -22,7 +29,7 @@ int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
     {
         cout << *(str + 1) << endl;
     }
-        // if the text is var, so we print his value.
+    // if the text is var, so we print his value.
     else
     {
         if (outputSymbolTable->outputMap->find(text) != outputSymbolTable->outputMap->end())
@@ -34,7 +41,15 @@ int PrintCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
     return 2;
 }
 
-// *** SleepCommand execute ***
+///
+// *The execute for the SleepCommand, pauses the program*
+/// \param str - string of the commands
+/// \param inputSymbolTable - table with all of the inputed info
+/// \param outputSymbolTable - table with all of the out info
+/// \param queueForUpdatingServer - queue which holds the strings that we need to send to the server in order to change the values
+/// \return How many spaces need to jump in the parser
+
+// *** SleepCommand  ***
 int SleepCommand::execute(string *str, InputSymbolTable* inputSymbolTable,
                           OutputSymbolTable* outputSymbolTable, queue<string> *queueForUpdatingServer)
 {

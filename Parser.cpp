@@ -13,7 +13,7 @@ void Parser::parse() {
     bool isServerConnect = false;
     bool isClientConnect = false;
     Command *c;
-//    Parser::checkExpression(this->finalStringVector, this->outputSymbolTable);
+    //Parser::checkExpression(this->finalStringVector, this->outputSymbolTable);
     //parser
     while (index < finalStringVector->size())
     {

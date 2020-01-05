@@ -14,3 +14,4 @@ public:
 
 
 #endif //PLEASEWORK_OUTPUTSYMBOLTABLE_H
+
